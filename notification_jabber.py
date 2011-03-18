@@ -26,7 +26,7 @@ try:
 	import ConfigParser
 	import xmpp
 except ImportError, err:
-	print("ERROR: Couldn't load module %s" % (err))
+	print "ERROR: Couldn't load module %s" % (err)
 	sys.exit(0)
 
 """Package versioning
@@ -48,7 +48,7 @@ if os.path.exists(os.path.join("/etc", __ini)):
 elif os.path.exists(os.path.join(os.getcwd(), __ini)):
 	__configIni = os.path.join(os.getcwd(), __ini)
 else:
-	print ("ERROR: Config file don't exist")
+	print "ERROR: Config file don't exist"
 	sys.exit(0)
 
 """Check command line parameters supplied and get it
@@ -74,9 +74,16 @@ __resource = __config.get('Jabber', 'resource')
 """
 
 __client = xmpp.Client(__server, debug=[])
-__client.connect(server=(__server, 5222))
-__client.auth(__login, __password, __resource)
-__client.sendInitPresence()
+try:
+	__client.connect(server=(__server, 5222))
+	__client.auth(__login, __password, __resource)
+	__client.sendInitPresence()
+except Exception, err:
+	print "ERROR: Couldn't connect or auth on server" % (err)
+	sys.exit(0)
 __smessage = xmpp.Message(__recepient, __message)
 __smessage.setAttr('type', 'chat')
-__client.send(__smessage)
+try:
+	__client.send(__smessage)
+except Exception, err:
+	print "ERROR: Couldn't send message" % (err)
