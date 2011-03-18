@@ -26,14 +26,14 @@ try:
 	import ConfigParser
 	import xmpp
 except ImportError, err:
-	print "ERROR: Couldn't load module %s" % (err)
+	print "ERROR: Couldn't load module. %s" % (err)
 	sys.exit(0)
 
 """Package versioning
 """
 
 __author__ = "vINT 21h <vint21h@vint21h.pp.ua>"
-__version__ = "0.001"
+__version__ = "0.1"
 
 """Global variables
 """
@@ -79,11 +79,11 @@ try:
 	__client.auth(__login, __password, __resource)
 	__client.sendInitPresence()
 except Exception, err:
-	print "ERROR: Couldn't connect or auth on server" % (err)
+	print "ERROR: Couldn't connect or auth on server. %s" % (err)
 	sys.exit(0)
 __smessage = xmpp.Message(__recepient, __message)
 __smessage.setAttr('type', 'chat')
 try:
 	__client.send(__smessage)
 except Exception, err:
-	print "ERROR: Couldn't send message" % (err)
+	print "ERROR: Couldn't send message. %s" % (err)
