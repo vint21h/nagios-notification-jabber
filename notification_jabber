@@ -39,6 +39,7 @@ __version__ = "0.1"
 """Global variables
 """
 ini = "notification_jabber.ini"
+__ini = "notification_jabber.ini"
 
 
 def parseCmdLine(args):
@@ -70,10 +71,11 @@ def checkConfigFile(ini):
     else:
         return (1, "UNKNOWN: Config file don't exist")
 
+
 def getConfig(configIni):
-	"""
-	Get connection settings from config file
-	"""
+    """
+    Get connection settings from config file
+    """
     config = ConfigParser.ConfigParser()
     config.read(configIni)
     server = config.get('Jabber', 'server')
