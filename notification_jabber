@@ -38,7 +38,7 @@ __version__ = "0.1"
 
 """Global variables
 """
-__ini = "notification_jabber.ini"
+ini = "notification_jabber.ini"
 
 
 def parseCmdLine(args):
@@ -49,24 +49,24 @@ def parseCmdLine(args):
     version = "%%prog %s" % (__version__)
 
     parser = OptionParser(usage=usage, version=version)
-    parser.add_option("-r", "--recepient", action="store", dest="__recepient", default="", metavar="RECEPIENT", help="message recepient jabber ID")
-    parser.add_option("-m", "--message", metavar="MESSAGE", action="store", type="string", dest="__message", default="", help="a message to send")
+    parser.add_option("-r", "--recepient", action="store", dest="recepient", default="", metavar="RECEPIENT", help="message recepient jabber ID")
+    parser.add_option("-m", "--message", metavar="MESSAGE", action="store", type="string", dest="message", default="", help="a message to send")
 
     return parser.parse_args(args)
 
 
-def checkConfigFile(__ini):
+def checkConfigFile(ini):
     """
     Check config exist
     0 - ok
     1 - no config file
     """
-    if os.path.exists(os.path.join("/etc", __ini)):
-        __configIni = os.path.join("/etc", __ini)
-        return (0, __configIni)
-    elif os.path.exists(os.path.join(os.getcwd(), __ini)):
-        __configIni = os.path.join(os.getcwd(), __ini)
-        return (0, __configIni)
+    if os.path.exists(os.path.join("/etc", ini)):
+        configIni = os.path.join("/etc", ini)
+        return (0, configIni)
+    elif os.path.exists(os.path.join(os.getcwd(), ini)):
+        configIni = os.path.join(os.getcwd(), ini)
+        return (0, configIni)
     else:
         return (1, "UNKNOWN: Config file don't exist")
 
