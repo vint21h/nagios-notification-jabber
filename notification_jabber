@@ -70,6 +70,17 @@ def checkConfigFile(ini):
     else:
         return (1, "UNKNOWN: Config file don't exist")
 
+def getConfig(configIni):
+	"""
+	Get connection settings from config file
+	"""
+    config = ConfigParser.ConfigParser()
+    config.read(configIni)
+    server = config.get('Jabber', 'server')
+    login = config.get('Jabber', 'login')
+    password = config.get('Jabber', 'password')
+    resource = config.get('Jabber', 'resource')
+
 """
 Check command line parameters supplied and get it
 """
