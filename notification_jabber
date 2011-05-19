@@ -72,6 +72,14 @@ def checkConfigFile(ini):
         return (1, "UNKNOWN: Config file don't exist")
 
 
+class Config(configIni):
+	def __init__(self):
+		self.configIni = configIni
+
+	def getConfig(self):
+		pass
+
+
 def getConfig(configIni):
     """
     Get connection settings from config file
