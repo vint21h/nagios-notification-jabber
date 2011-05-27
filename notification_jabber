@@ -52,7 +52,7 @@ def parseCmdLine(args):
     parser = OptionParser(usage=usage, version=version)
     parser.add_option("-r", "--recepient", action="store", dest="recepient", default="", metavar="RECEPIENT", help="message recepient jabber ID")
     parser.add_option("-m", "--message", metavar="MESSAGE", action="store", type="string", dest="message", default="", help="a message to send")
-    parser.add_option(-c, "--config", netavar="CONFIG", action="stiore", type="string", dest="config", default="/etc/" + ini, help="alternative config file path")
+    parser.add_option("-c", "--config", netavar="CONFIG", action="stiore", type="string", dest="config", default="/etc/" + ini, help="alternative config file path")
 
     return parser.parse_args(args)
 
@@ -78,7 +78,10 @@ def getConfig(configIni):
     Get connection settings from config file
     """
     config = ConfigParser.ConfigParser()
-    config.read(configIni)
+    try:
+        config.read(configIni)
+    except Error, err:
+        return (1, "ERROR: Read config error.")
     server = config.get('Jabber', 'server')
     login = config.get('Jabber', 'login')
     password = config.get('Jabber', 'password')
