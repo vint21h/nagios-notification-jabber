@@ -1,0 +1,37 @@
+notification_jabber is a Nagios-plugin that send Nagios notifications via
+jabber
+
+INSTALLATION
+copy notification_jabber into your Nagios plugins directory
+
+REQUIRMENTS
+python xmpp library (http://xmpppy.sourceforge.net/)
+
+CONFIGURATION
+Read Nagios documentation and create command and contact definition like this:
+
+# 'host-notify-by-jabber' command definition
+define command{
+    command_name    host-notify-by-jabber
+    command_line    $USER1$/notification_jabber -r $CONTACTPAGER$ -m "Host '$HOSTALIAS$' is $HOSTSTATE$ - Info: $HOSTOUTPUT$"
+}
+
+# 'notify-by-jabber' command definition
+define command{
+    command_name    notify-by-jabber
+    command_line    $USER1$/notification_jabber -r $CONTACTPAGER$ -m "$NOTIFICATIONTYPE$ $HOSTNAME$ $SERVICEDESC$ $SERVICESTATE$ $SERVICEOUTPUT$ $LONGDATETIME$"
+}
+
+define contact{
+        contact_name                    user; Short name of user
+    	use				                generic-contact		; Inherit default values from generic-contact template (defined above)
+        alias                           Full Name of User		; Full name of user
+        email                           user@localhost.local; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+        pager				            user@localhost.local
+        service_notification_commands	notify-service-by-email,notify-by-jabber
+        host_notification_commands	notify-host-by-email,host-notify-by-jabber
+        }
+
+CONTACTS
+Project Website: https://github.com/vint21h/notification_jabber
+Author: vINT 21h <vint21h@vint21h.pp.ua>
