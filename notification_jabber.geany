@@ -8,14 +8,12 @@ indent_mode=3
 
 [project]
 name=notification_jabber
-base_path=/home/share/dev/notification_jabber
+base_path=/home/vint21h/dev/notification_jabber
 description=
 
 [long line marker]
 long_line_behaviour=1
-long_line_column=72
+long_line_column=80
 
 [files]
-current_page=1
-FILE_NAME_0=0;Python;0;16;0;1;1;/home/share/dev/notification_jabber/notification_jabber;0;4
-FILE_NAME_1=0;Conf;0;16;0;1;1;/home/share/dev/notification_jabber/notification_jabber.ini;0;4
+current_page=0
