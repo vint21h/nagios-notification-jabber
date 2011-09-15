@@ -42,88 +42,96 @@ ini = "notification_jabber.ini"
 __ini = "notification_jabber.ini"
 
 
-def parseCmdLine(args):
+def parsecmdline(args):
     """
-    Commandline parsing
+    Commandline options arguments parsing
     """
-    usage = "usage: %prog recepient message"
     version = "%%prog %s" % (__version__)
-
-    parser = OptionParser(usage=usage, version=version)
-    parser.add_option("-r", "--recepient", action="store", dest="recepient", default="", metavar="RECEPIENT", help="message recepient jabber ID")
-    parser.add_option("-m", "--message", metavar="MESSAGE", action="store", type="string", dest="message", default="", help="a message to send")
-    parser.add_option("-c", "--config", netavar="CONFIG", action="stiore", type="string", dest="config", default="/etc/" + ini, help="alternative config file path")
+    parser = OptionParser(version=version)
+    parser.add_option("-r", "--recepient", action="store", dest="recepient",
+                                        default="", metavar="RECEPIENT",
+                                        help="message recepient jabber ID")
+    parser.add_option("-m", "--message", metavar="MESSAGE", action="store",
+                                        type="string", dest="message",
+                                        default="", help="a message to send")
+    parser.add_option("-c", "--config", netavar="CONFIG", action="store",
+                                        type="string", dest="config",
+                                        default=os.path.join("/etc/", ini),
+                                        help="config file path")
 
     return parser.parse_args(args)
 
 
-def checkConfigFile(ini):
+def checkconfigfile(ini):
     """
     Check config exist
     0 - ok
     1 - no config file
     """
-    if os.path.exists(os.path.join("/etc", ini)):
-        configIni = os.path.join("/etc", ini)
-        return (0, configIni)
+    if os.path.exists(ini):
+        configini = ini
+        return [0, configini]
+    elif os.path.exists(os.path.join("/etc", ini)):
+        configini = os.path.join("/etc", ini)
+        return [0, configini]
     elif os.path.exists(os.path.join(os.getcwd(), ini)):
-        configIni = os.path.join(os.getcwd(), ini)
-        return (0, configIni)
+        configini = os.path.join(os.getcwd(), ini)
+        return [0, configini]
     else:
-        return (1, "UNKNOWN: Config file don't exist")
+        return [1, "ERROR: Config file don't exist" % (ini)]
 
 
-def getConfig(configIni):
+def getconfig(configini):
     """
     Get connection settings from config file
     """
     config = ConfigParser.ConfigParser()
     try:
-        config.read(configIni)
+        config.read(configini)
     except Error, err:
-        return (1, "ERROR: Read config error.")
+        return [1, "ERROR: Read config error."]
     server = config.get('Jabber', 'server')
     login = config.get('Jabber', 'login')
     password = config.get('Jabber', 'password')
     resource = config.get('Jabber', 'resource')
 
+
+if __name__ == "__main__":
+    (OPTIONS, args) = parsecmdline(sys.argv)
 """
 Check command line parameters supplied and get it
 """
 
-if len(sys.argv) < 3:
-    print ("Usage: %s [recepient] [message]" % (sys.argv[0]))
-    sys.exit(0)
-__recepient = sys.argv[1]
-__message = sys.argv[2]
+    if len(sys.argv) < 3:
+        print ("Usage: %s [recepient] [message]" % (sys.argv[0]))
+        sys.exit(0)
+    __recepient = sys.argv[1]
+    __message = sys.argv[2]
 
 """Get connection settings from config file
 """
 
-__config = ConfigParser.ConfigParser()
-__config.read(checkConfigFile(__ini))
-__server = __config.get('Jabber', 'server')
-__login = __config.get('Jabber', 'login')
-__password = __config.get('Jabber', 'password')
-__resource = __config.get('Jabber', 'resource')
+    __config = ConfigParser.ConfigParser()
+    __config.read(checkConfigFile(__ini))
+    __server = __config.get('Jabber', 'server')
+    __login = __config.get('Jabber', 'login')
+    __password = __config.get('Jabber', 'password')
+    __resource = __config.get('Jabber', 'resource')
 
 """Connect to server and send message
 """
 
-__client = xmpp.Client(__server, debug=[])
-try:
-    __client.connect(server=(__server, 5222))
-    __client.auth(__login, __password, __resource)
-    __client.sendInitPresence()
-except Exception, err:
-    print "ERROR: Couldn't connect or auth on server. %s" % (err)
-    sys.exit(0)
-__smessage = xmpp.Message(__recepient, __message)
-__smessage.setAttr('type', 'chat')
-try:
-    __client.send(__smessage)
-except Exception, err:
-    print "ERROR: Couldn't send message. %s" % (err)
-
-if __name__ == "__main__":
-    pass
+    __client = xmpp.Client(__server, debug=[])
+    try:
+        __client.connect(server=(__server, 5222))
+        __client.auth(__login, __password, __resource)
+        __client.sendInitPresence()
+    except Exception, err:
+        print "ERROR: Couldn't connect or auth on server. %s" % (err)
+        sys.exit(0)
+    __smessage = xmpp.Message(__recepient, __message)
+    __smessage.setAttr('type', 'chat')
+    try:
+        __client.send(__smessage)
+    except Exception, err:
+        print "ERROR: Couldn't send message. %s" % (err)
