@@ -13,25 +13,27 @@ Installation
 
 Configuration
 -------------
+* Read and understand Nagios documentation.
+* Add Nagios variable $NJ$=/usr/bin/notification_jabber
 * Create Nagios commands definitions like this:
 
 # 'host-notify-by-jabber' command definition
 define command
 {
     command_name    host-notify-by-jabber
-    command_line    $USER1$/notification_jabber -r $CONTACTPAGER$ -m "Host '$HOSTALIAS$' is $HOSTSTATE$ - Info: $HOSTOUTPUT$"
+    command_line    $NJ$ -r $CONTACTPAGER$ -m "Host '$HOSTALIAS$' is $HOSTSTATE$ - Info: $HOSTOUTPUT$"
 }
 
 # 'notify-by-jabber' command definition
 define command
 {
     command_name    notify-by-jabber
-    command_line    $USER1$/notification_jabber -r $CONTACTPAGER$ -m "$NOTIFICATIONTYPE$ $HOSTNAME$ $SERVICEDESC$ $SERVICESTATE$ $SERVICEOUTPUT$ $LONGDATETIME$"
+    command_line    $NJ$ -r $CONTACTPAGER$ -m "$NOTIFICATIONTYPE$ $HOSTNAME$ $SERVICEDESC$ $SERVICESTATE$ $SERVICEOUTPUT$ $LONGDATETIME$"
 }
 
 * Add to your contact definition option pager with your jabber id and add to service_notification_commands and host_notification_commands options notify-by-jabber and host-notify-by-jabber values respectively.
 
-* Then edit your notification_jabber.ini.
+* Copy notification_jabber.ini from /usr/share/doc/notification_jabber to /etc. Populate notification_jabber.ini with your nagios bot Jabber ID and password.
 
 Contacts
 --------
