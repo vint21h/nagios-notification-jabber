@@ -15,13 +15,13 @@ except ImportError, err:
     print "ERROR: Couldn't load module. %s" % (err)
     sys.exit(0)
 
-
+# metadata
 __author__ = "Alexei Andrushievich"
 __email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv2 or later"
 __description__ = "Notifications via jabber Nagios plugin"
 __url__ = "https://github.com/vint21h/notification_jabber"
-VERSION = (0, 2, 1)
+VERSION = (0, 2, 4)
 __version__ = '.'.join(map(str, VERSION))
 
 
@@ -50,10 +50,9 @@ def parse_cmd_line():
 
     # check mandatory command line options supplied
     mandatories = ["recipient", "message", ]
-    for mandatory in mandatories:
-        if not options.__dict__[mandatory]:
-            print "Mandatory command line option '%s' is missing." % mandatory
-            exit(0)
+    if not all(options.__dict__[mandatory] for mandatory in mandatories):
+        print "Mandatory command line option missing."
+        exit(0)
 
     return options
 
@@ -94,10 +93,9 @@ def parse_config(configini):
 
     # check mandatory config options supplied
     mandatories = ["jid", "password", ]
-    for mandatory in mandatories:
-        if not configdata[mandatory]:
-            print "Mandatory config option '%s' is missing." % mandatory
-            exit(0)
+    if not all(configdata[mandatory] for mandatory in mandatories):
+        print "Mandatory config option missing."
+       	exit(0)
 
     return configdata
 
