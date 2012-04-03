@@ -5,6 +5,25 @@
 # notification_jabber
 # notification_jabber.py
 
+# Copyright (c) 2011-2012 Alexei Andrushievich <vint21h@vint21h.pp.ua>
+# Notifications via jabber Nagios plugin [https://github.com/vint21h/notification_jabber]
+#
+# This file is part of notification_jabber.
+#
+# notification_jabber is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 try:
     import sys
     import os
@@ -18,7 +37,7 @@ except ImportError, err:
 # metadata
 __author__ = "Alexei Andrushievich"
 __email__ = "vint21h@vint21h.pp.ua"
-__licence__ = "GPLv2 or later"
+__licence__ = "GPLv3 or later"
 __description__ = "Notifications via jabber Nagios plugin"
 __url__ = "https://github.com/vint21h/notification_jabber"
 VERSION = (0, 2, 4)

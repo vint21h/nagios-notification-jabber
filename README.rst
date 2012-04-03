@@ -1,5 +1,5 @@
-# notification_jabber
-# README.rst
+.. notification_jabber
+.. README.rst
 
 A notification_jabber documentation
 ===================================
@@ -8,7 +8,7 @@ A notification_jabber documentation
 
 Installation
 ------------
-* Obtain your copy of source code from git repository: git clone https://vint21h@github.com/vint21h/notification_jabber.git
+* Obtain your copy of source code from git repository: ``git clone https://vint21h@github.com/vint21h/notification_jabber.git``
 * Run setup.py install under root user.
 
 Configuration
@@ -33,7 +33,7 @@ define command
 
 * Add to your contact definition option pager with your jabber id and add to service_notification_commands and host_notification_commands options notify-by-jabber and host-notify-by-jabber values respectively.
 
-* Copy notification_jabber.ini from /usr/share/doc/notification_jabber to /etc. Populate notification_jabber.ini with your nagios bot Jabber ID and password.
+* Copy notification_jabber.ini from /usr/share/doc/notification_jabber to /etc. Populate notification_jabber.ini with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string.
 
 Contacts
 --------
