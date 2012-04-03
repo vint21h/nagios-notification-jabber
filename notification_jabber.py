@@ -16,9 +16,12 @@ except ImportError, err:
     sys.exit(0)
 
 
-__author__ = "Alexei Andrushievich <vint21h@vint21h.pp.ua>"
+__author__ = "Alexei Andrushievich"
+__email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv2 or later"
-VERSION = (0, 1, 0)
+__description__ = "Notifications via jabber Nagios plugin"
+__url__ = "https://github.com/vint21h/notification_jabber"
+VERSION = (0, 2, 1)
 __version__ = '.'.join(map(str, VERSION))
 
 

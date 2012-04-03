@@ -9,25 +9,34 @@ import warnings
 from setuptools import setup, find_packages
 
 from notification_jabber import (
+	__author__,
+	__email__,
     __version__,
-    __license__,
+    __licence__,
+    __description__,
+    __url__,
 )
+
+SHARE_FILES = ['README.rst', 'notification_jabber.ini', 'COPYING', ]
 
 setup(
     name = "notification_jabber",
     version = __version__,
     packages = find_packages(),
-    scripts = ['notification_jabber.py'],
+    scripts = ['notification_jabber.py', ],
     install_requires = ['docutils', 'xmpppy', ],
     package_data = {
-    	'notification_jabber': ['*.rst', '*.ini', 'COPYING', ],
+    	'': SHARE_FILES,
     },
-    author = "Alexei Andrushievich",
-    author_email = "vint21h@vint21h.pp.ua",
-    description = "Nagios-plugin that send Nagios notifications via jabber",
-    long_description = open('README.rst').read(),
-    license = __license__,
-    url = "https://github.com/vint21h/notification_jabber",
+    data_files = [
+			('/usr/share/doc/notification_jabber/', SHARE_FILES),
+	],
+    author = __author__,
+    author_email = __email__,
+    description = __description__,
+    long_description = __description__,
+    license = __licence__,
+    url = __url__,
     zip_safe = False,
     include_package_data = True,
 )

@@ -1,1 +1,3 @@
-recursive-include ./fonts *
+include README.rst
+include COPYING
+include notification_jabber.ini
