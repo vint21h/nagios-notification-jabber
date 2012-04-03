@@ -48,11 +48,11 @@ def parse_cmd_line():
 
     options = parser.parse_args(sys.argv)[0]
 
-    # check mandatory options supplied
+    # check mandatory command line options supplied
     mandatories = ["recipient", "message", ]
     for mandatory in mandatories:
         if not options.__dict__[mandatory]:
-            print "Mandatory option '%s' is missing." % mandatory
+            print "Mandatory command line option '%s' is missing." % mandatory
             exit(0)
 
     return options
@@ -85,12 +85,20 @@ def parse_config(configini):
         config.read(configini)
     except Exception:
         print "ERROR: Config file read %s error." % (configini)
-        sys.exit(0)
+        sys.exit(-1)
     configdata = {
                     'jid': config.get('JABBER', 'jid'),
                     'password': config.get('JABBER', 'password'),
                     'resource': config.get('JABBER', 'resource'),
     }
+
+    # check mandatory config options supplied
+    mandatories = ["jid", "password", ]
+    for mandatory in mandatories:
+        if not configdata[mandatory]:
+            print "Mandatory config option '%s' is missing." % mandatory
+            exit(0)
+
     return configdata
 
 
@@ -107,17 +115,17 @@ def send_message(config, recipient, message):
         client.sendInitPresence()
     except Exception:
         print "ERROR: Couldn't connect or auth on server."
-        sys.exit(0)
+        sys.exit(-1)
     xmessage = xmpp.Message(recipient, message)
     xmessage.setAttr('type', 'chat')
     try:
         client.send(xmessage)
     except Exception:
         print "ERROR: Couldn't send message."
+        sys.exit(-1)
 
 
 if __name__ == "__main__":
     # get options, check and parse config file and send message
     options = parse_cmd_line()
-    data = parse_config(check_config_file(options.config))
-    send_message(data, options.recipient, options.message)
+    send_message(parse_config(check_config_file(options.config)), options.recipient, options.message)

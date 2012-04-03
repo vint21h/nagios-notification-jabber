@@ -8,11 +8,12 @@ A notification_jabber documentation
 
 Installation
 ------------
-Copy notification_jabber.py and notification_jabber.ini into your Nagios plugins directory. Or notification_jabber.ini to /etc.
+* Obtain your copy of source code from git repository: git clone https://vint21h@github.com/vint21h/notification_jabber.git
+* Run setup.py install under root user.
 
 Configuration
 -------------
-Create Nagios commands definitions like this:
+* Create Nagios commands definitions like this:
 
 # 'host-notify-by-jabber' command definition
 define command
@@ -28,12 +29,12 @@ define command
     command_line    $USER1$/notification_jabber -r $CONTACTPAGER$ -m "$NOTIFICATIONTYPE$ $HOSTNAME$ $SERVICEDESC$ $SERVICESTATE$ $SERVICEOUTPUT$ $LONGDATETIME$"
 }
 
-Add to your contact definition option pager with your jabber id and add to service_notification_commands and host_notification_commands options notify-by-jabber and host-notify-by-jabber values respectively.
+* Add to your contact definition option pager with your jabber id and add to service_notification_commands and host_notification_commands options notify-by-jabber and host-notify-by-jabber values respectively.
 
-Then edit your notification_jabber.ini.
+* Then edit your notification_jabber.ini.
 
 Contacts
 --------
-Project Website: https://github.com/vint21h/notification_jabber
+**Project Website**: https://github.com/vint21h/notification_jabber
 
-Author: Alexei Andrushievich <vint21h@vint21h.pp.ua>
+**Author**: Alexei Andrushievich <vint21h@vint21h.pp.ua>
