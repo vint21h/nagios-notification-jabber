@@ -63,7 +63,7 @@ def parse_cmd_line():
                                         help="path to config file")
     parser.add_option("-q", "--quiet", metavar="QUIET", action="store_false",
                                         default=False, dest="quiet",
-                                        help="path to config file")
+                                        help="be quiet")
 
     options = parser.parse_args(sys.argv)[0]
 
