@@ -40,7 +40,7 @@ __email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv3 or later"
 __description__ = "Notifications via jabber Nagios plugin"
 __url__ = "https://github.com/vint21h/notification_jabber"
-VERSION = (0, 3, 0)
+VERSION = (0, 3, 1)
 __version__ = '.'.join(map(str, VERSION))
 
 
@@ -114,7 +114,7 @@ def parse_config(configini):
     mandatories = ["jid", "password", ]
     if not all(configdata[mandatory] for mandatory in mandatories):
         print "Mandatory config option missing."
-       	exit(0)
+        exit(0)
 
     return configdata
 

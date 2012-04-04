@@ -9,8 +9,8 @@ import warnings
 from setuptools import setup, find_packages
 
 from notification_jabber import (
-	__author__,
-	__email__,
+    __author__,
+    __email__,
     __version__,
     __licence__,
     __description__,
@@ -26,11 +26,11 @@ setup(
     scripts = ['notification_jabber.py', ],
     install_requires = ['docutils', 'xmpppy', ],
     package_data = {
-    	'': SHARE_FILES,
+        '': SHARE_FILES,
     },
     data_files = [
-			('/usr/share/doc/notification_jabber/', SHARE_FILES),
-	],
+            ('/usr/share/doc/notification_jabber/', SHARE_FILES),
+    ],
     author = __author__,
     author_email = __email__,
     description = __description__,
