@@ -19,26 +19,28 @@ Configuration
 * Add Nagios variable ``$NJ$=/usr/bin/notification_jabber``
 * Create Nagios commands definitions like this:
 
-	``# 'host-notify-by-jabber' command definition``
+	# 'host-notify-by-jabber' command definition
 
-	``define command``
+	define command
 
-	``{``
-		``command_name    host-notify-by-jabber``
-		``command_line    $NJ$ -r $CONTACTPAGER$ -m "Host '$HOSTALIAS$' is $HOSTSTATE$ - Info: $HOSTOUTPUT$"``
+	{
+		command_name    host-notify-by-jabber
 
-	``}``
+		command_line    $NJ$ -r $CONTACTPAGER$ -m "Host '$HOSTALIAS$' is $HOSTSTATE$ - Info: $HOSTOUTPUT$"
+
+	}
 
 
-	``# 'notify-by-jabber' command definition``
+	# 'notify-by-jabber' command definition
 
-	``define command``
+	define command
 
-	``{``
-		``command_name    notify-by-jabber``
-		``command_line    $NJ$ -r $CONTACTPAGER$ -m "$NOTIFICATIONTYPE$ $HOSTNAME$ $SERVICEDESC$ $SERVICESTATE$ $SERVICEOUTPUT$ $LONGDATETIME$"``
+	{
+		command_name    notify-by-jabber
 
-	``}``
+		command_line    $NJ$ -r $CONTACTPAGER$ -m "$NOTIFICATIONTYPE$ $HOSTNAME$ $SERVICEDESC$ $SERVICESTATE$ $SERVICEOUTPUT$ $LONGDATETIME$"
+
+	}
 
 * Add to your contact definition option 'pager' with your Jabber ID and add to 'service_notification_commands' and 'host_notification_commands' contact definition options 'notify-by-jabber' and 'host-notify-by-jabber' values respectively.
 
