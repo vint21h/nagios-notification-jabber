@@ -10,8 +10,8 @@ A notification_jabber documentation
 
 Installation
 ------------
-* Obtain your copy of source code from git repository: ``git clone https://vint21h@github.com/vint21h/notification_jabber.git``
-* Run setup.py install under root user.
+* Obtain your copy of source code from git repository: ``git clone https://vint21h@github.com/vint21h/notification_jabber.git``. Or download latest release from https://github.com/vint21h/notification_jabber/downloads.
+* Run ``./setup.py install`` from repository source tree or unpacked archive under root user.
 
 Configuration
 -------------
@@ -21,23 +21,23 @@ Configuration
 
 ::
 
-	# 'host-notify-by-jabber' command definition
+	# 'host-notify-by-jabber'
 	define command
 	{
 		command_name    host-notify-by-jabber
 		command_line    $NJ$ -r $CONTACTPAGER$ -m "Host '$HOSTALIAS$' is $HOSTSTATE$ - Info: $HOSTOUTPUT$"
 	}
 
-	# 'notify-by-jabber' command definition
+	# 'notify-by-jabber'
 	define command
 	{
 		command_name    notify-by-jabber
 		command_line    $NJ$ -r $CONTACTPAGER$ -m "$NOTIFICATIONTYPE$ $HOSTNAME$ $SERVICEDESC$ $SERVICESTATE$ $SERVICEOUTPUT$ $LONGDATETIME$"
 	}
 
-* Add to your contact definition option 'pager' with your Jabber ID and add to 'service_notification_commands' and 'host_notification_commands' contact definition options 'notify-by-jabber' and 'host-notify-by-jabber' values respectively.
+* Add to your contact definition option ``pager`` with your Jabber ID value and add to ``service_notification_commands`` and ``host_notification_commands`` contact definition options ``notify-by-jabber`` and ``host-notify-by-jabber`` values respectively.
 
-* Copy notification_jabber.ini from /usr/share/doc/notification_jabber to /etc. Populate notification_jabber.ini with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string.
+* Copy ``notification_jabber.ini`` from ``/usr/share/doc/notification_jabber`` to ``/etc``. Populate ``notification_jabber.ini`` with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string.
 
 Contacts
 --------
