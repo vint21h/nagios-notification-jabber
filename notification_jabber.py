@@ -40,7 +40,7 @@ __email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv3 or later"
 __description__ = "Notifications via jabber Nagios plugin"
 __url__ = "https://github.com/vint21h/notification_jabber"
-VERSION = (0, 3, 3)
+VERSION = (0, 3, 4)
 __version__ = '.'.join(map(str, VERSION))
 
 
@@ -53,7 +53,7 @@ def parse_cmd_line():
     version = "%%prog %s" % (__version__)
     parser = OptionParser(version=version)
     parser.add_option("-r", "--recipient", action="store", dest="recipient",
-                                        type="string, "default="",
+                                        type="string", default="",
                                         metavar="RECIPIENT",
                                         help="message recipient Jabber ID")
     parser.add_option("-m", "--message", metavar="MESSAGE", action="store",
