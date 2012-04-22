@@ -16,7 +16,7 @@ Installation
 Configuration
 -------------
 * Read and understand Nagios documentation.
-* Add Nagios variable ``$NJ$=/usr/bin/notification_jabber``
+* Add Nagios variable ``$NJ$=/usr/bin/notification_jabber.py``
 * Create Nagios commands definitions like this:
 
 ::
