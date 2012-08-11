@@ -115,7 +115,7 @@ def parse_config(configini):
     # check mandatory config options supplied
     mandatories = ["jid", "password", ]
     if not all(configdata[mandatory] for mandatory in mandatories):
-        sys.stdout.write("Mandatory command line option missing\n")
+        sys.stdout.write("Mandatory config option missing\n")
         exit(0)
 
     return configdata
