@@ -8,6 +8,7 @@
 *.save
 
 .idea/
-*-venv/
 *sublime*
 *geany*
+*-venv/
+build/*
