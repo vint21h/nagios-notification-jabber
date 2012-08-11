@@ -1,0 +1,13 @@
+.*.swp
+*.pyc
+*.pyo
+*~
+*.orig
+*.bak
+.DS_Store
+*.save
+
+.idea/
+*-venv/
+*sublime*
+*geany*

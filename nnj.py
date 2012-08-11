@@ -2,15 +2,15 @@
 
 # -*- coding: utf-8 -*-
 
-# notification_jabber
-# notification_jabber.py
+# nagios-notification-jabber
+# nnj.py
 
 # Copyright (c) 2011-2012 Alexei Andrushievich <vint21h@vint21h.pp.ua>
-# Notifications via jabber Nagios plugin [https://github.com/vint21h/notification_jabber]
+# Notifications via jabber Nagios plugin [https://github.com/vint21h/nagios-notification-jabber]
 #
-# This file is part of notification_jabber.
+# This file is part of nagios-notification-jabber.
 #
-# notification_jabber is free software: you can redistribute it and/or modify
+# nagios-notification-jabber is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -32,7 +32,7 @@ try:
     from optparse import OptionParser
     import xmpp
 except ImportError, err:
-    print "ERROR: Couldn't load module. %s" % (err)
+    sys.stderr.write("ERROR: Couldn't load module. %s\n" % err)
     sys.exit(-1)
 
 # metadata
@@ -40,8 +40,8 @@ __author__ = "Alexei Andrushievich"
 __email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv3 or later"
 __description__ = "Notifications via jabber Nagios plugin"
-__url__ = "https://github.com/vint21h/notification_jabber"
-VERSION = (0, 3, 5)
+__url__ = "https://github.com/vint21h/nagios-notification-jabber"
+VERSION = (0, 4, 0)
 __version__ = '.'.join(map(str, VERSION))
 
 
@@ -72,8 +72,8 @@ def parse_cmd_line():
     # check mandatory command line options supplied
     mandatories = ["recipient", "message", ]
     if not all(options.__dict__[mandatory] for mandatory in mandatories):
-        print "Mandatory command line option missing."
-        exit(0)
+        sys.stdout.write("Mandatory command line option missing\n")
+        sys.exit(0)
 
     return options
 
@@ -83,7 +83,7 @@ def check_config_file(ini):
     Check config exist.
     """
 
-    default_ini = "notification_jabber.ini"
+    default_ini = "nnj.ini"
     if ini and os.path.exists(ini):  # user config file path
         return ini
     elif os.path.exists(default_ini):  # default config file path
@@ -91,7 +91,7 @@ def check_config_file(ini):
     elif os.path.exists(os.path.join("/etc", default_ini)):  # default config file path in /etc
         return os.path.join("/etc", default_ini)
     else:
-        print "ERROR: Config file %s don't exist" % (ini)
+        sys.stderr.write("ERROR: Config file %s don't exist\n" % ini)
         sys.exit(0)
 
 
@@ -115,7 +115,7 @@ def parse_config(configini):
     # check mandatory config options supplied
     mandatories = ["jid", "password", ]
     if not all(configdata[mandatory] for mandatory in mandatories):
-        print "Mandatory config option missing."
+        sys.stdout.write("Mandatory command line option missing\n")
         exit(0)
 
     return configdata
@@ -132,15 +132,15 @@ def send_message(config, recipient, message):
         client.connect()
         client.auth(jid.getNode(), config['password'], config['resource'])
         client.sendInitPresence()
-    except Exception:
-        print "ERROR: Couldn't connect or auth on server."
+    except Exception, err:
+        sys.stdout.write("ERROR: Couldn't connect or auth on server. %s\n" % err)
         sys.exit(-1)
     xmessage = xmpp.Message(recipient, message)
     xmessage.setAttr('type', 'chat')
     try:
         client.send(xmessage)
-    except Exception:
-        print "ERROR: Couldn't send message."
+    except Exception, err:
+        sys.stdout.write("ERROR: Couldn't send message. %s\n" % err)
         sys.exit(-1)
 
 

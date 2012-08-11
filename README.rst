@@ -1,22 +1,22 @@
-.. notification_jabber
+.. nagios-notification-jabber
 .. README.rst
 
-A notification_jabber documentation
+A nagios-notification-jabber documentation
 ===================================
 
-    *notification_jabber is a Nagios-plugin that send Nagios notifications via jabber*
+    *nagios-notification-jabber is a Nagios-plugin that send Nagios notifications via jabber*
 
 .. contents::
 
 Installation
 ------------
-* Obtain your copy of source code from git repository: ``git clone https://vint21h@github.com/vint21h/notification_jabber.git``. Or download latest release from https://github.com/vint21h/notification_jabber/downloads.
+* Obtain your copy of source code from git repository: ``git clone https://github.com/vint21h/nagios-notification-jabber.git``. Or download latest release from https://github.com/vint21h/nagios-notification-jabber/downloads.
 * Run ``./setup.py install`` from repository source tree or unpacked archive under root user.
 
 Configuration
 -------------
 * Read and understand Nagios documentation.
-* Add Nagios variable ``$NJ$=/usr/bin/notification_jabber.py``
+* Add Nagios variable ``$NJ$=/usr/bin/nnj.py``
 * Create Nagios commands definitions like this:
 
 ::
@@ -37,10 +37,10 @@ Configuration
 
 * Add to your contact definition option ``pager`` with your Jabber ID value and add to ``service_notification_commands`` and ``host_notification_commands`` contact definition options ``notify-by-jabber`` and ``host-notify-by-jabber`` values respectively.
 
-* Copy ``notification_jabber.ini`` from ``/usr/share/doc/notification_jabber`` to ``/etc``. Populate ``notification_jabber.ini`` with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string.
+* Populate ``/etc/nnj.ini`` with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string.
 
 Contacts
 --------
-**Project Website**: https://github.com/vint21h/notification_jabber
+**Project Website**: https://github.com/vint21h/nagios-notification-jabber
 
 **Author**: Alexei Andrushievich <vint21h@vint21h.pp.ua>

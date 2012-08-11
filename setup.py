@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# notification_jabber
+# nagios-notification-jabber
 # setup.py
 
-import os
-import warnings
 from setuptools import setup, find_packages
 
-from notification_jabber import (
+from nnj import (
     __author__,
     __email__,
     __version__,
@@ -17,19 +15,21 @@ from notification_jabber import (
     __url__,
 )
 
-SHARE_FILES = ['README.rst', 'notification_jabber.ini', 'COPYING', ]
+SHARED_FILES = ['README.rst', 'COPYING', ]
+CONFIG_FILES = ['nnj.ini', ]
 
 setup(
-    name = "notification_jabber",
+    name = "nagios-notification-jabber",
     version = __version__,
     packages = find_packages(),
-    scripts = ['notification_jabber.py', ],
+    scripts = ['nnj.py', ],
     install_requires = ['docutils', 'xmpppy', ],
     package_data = {
-        '': SHARE_FILES,
+        '': (SHARED_FILES, CONFIG_FILES),
     },
     data_files = [
-            ('/usr/share/doc/notification_jabber/', SHARE_FILES),
+            ('/usr/share/doc/nagios-notification-jabber/', SHARED_FILES),
+            ('/etc/', CONFIG_FILES),
     ],
     author = __author__,
     author_email = __email__,
