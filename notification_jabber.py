@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 
 # nagios-notification-jabber
-# nnj.py
+# notification_jabber.py
 
 # Copyright (c) 2011-2012 Alexei Andrushievich <vint21h@vint21h.pp.ua>
 # Notifications via jabber Nagios plugin [https://github.com/vint21h/nagios-notification-jabber]
@@ -41,7 +41,7 @@ __email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv3 or later"
 __description__ = "Notifications via jabber Nagios plugin"
 __url__ = "https://github.com/vint21h/nagios-notification-jabber"
-VERSION = (0, 4, 0)
+VERSION = (0, 5, 0)
 __version__ = '.'.join(map(str, VERSION))
 
 
@@ -83,11 +83,9 @@ def check_config_file(ini):
     Check config exist.
     """
 
-    default_ini = "nnj.ini"
+    default_ini = "notification_jabber.ini"
     if ini and os.path.exists(ini):  # user config file path
         return ini
-    elif os.path.exists(default_ini):  # default config file path
-        return default_ini
     elif os.path.exists(os.path.join("/etc", default_ini)):  # default config file path in /etc
         return os.path.join("/etc", default_ini)
     else:

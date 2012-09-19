@@ -6,7 +6,7 @@
 
 from setuptools import setup, find_packages
 
-from nnj import (
+from notification_jabber import (
     __author__,
     __email__,
     __version__,
@@ -16,13 +16,13 @@ from nnj import (
 )
 
 SHARED_FILES = ['README.rst', 'COPYING', ]
-CONFIG_FILES = ['nnj.ini', ]
+CONFIG_FILES = ['notification_jabber.ini', ]
 
 setup(
-    name = "nagios-notification-jabber",
+    name = "nagios_notification_jabber",
     version = __version__,
     packages = find_packages(),
-    scripts = ['nnj.py', ],
+    scripts = ['notification_jabber.py', ],
     install_requires = ['docutils', 'xmpppy', ],
     package_data = {
         '': (SHARED_FILES, CONFIG_FILES),
@@ -34,7 +34,7 @@ setup(
     author = __author__,
     author_email = __email__,
     description = __description__,
-    long_description = __description__,
+    long_description = open('README.rst').read(),
     license = __licence__,
     url = __url__,
     zip_safe = False,

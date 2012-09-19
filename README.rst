@@ -16,7 +16,7 @@ Installation
 Configuration
 -------------
 * Read and understand Nagios documentation.
-* Add Nagios variable ``$NJ$=/usr/bin/nnj.py``
+* Add Nagios variable ``$NJ$=/usr/bin/notification_jabber.py``
 * Create Nagios commands definitions like this:
 
 ::
@@ -37,7 +37,7 @@ Configuration
 
 * Add to your contact definition option ``pager`` with your Jabber ID value and add to ``service_notification_commands`` and ``host_notification_commands`` contact definition options ``notify-by-jabber`` and ``host-notify-by-jabber`` values respectively.
 
-* Populate ``/etc/nnj.ini`` with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string.
+* Populate ``/etc/notification_jabber.ini`` with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string.
 
 Contacts
 --------

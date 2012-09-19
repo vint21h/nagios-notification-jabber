@@ -12,3 +12,5 @@
 *geany*
 *-venv/
 build/*
+dist/*
+*.egg-info/*
