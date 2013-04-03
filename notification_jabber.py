@@ -43,7 +43,7 @@ __email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv3 or later"
 __description__ = "Notifications via jabber Nagios plugin"
 __url__ = "https://github.com/vint21h/nagios-notification-jabber"
-VERSION = (0, 6, 1)
+VERSION = (0, 6, 2)
 __version__ = '.'.join(map(str, VERSION))
 
 
@@ -98,11 +98,15 @@ def parse_config(options):
                 sys.stderr.write("ERROR: Config file read %s error." % options.config)
             sys.exit(-1)
 
-        configdata = {
-            'jid': config.get('JABBER', 'jid'),
-            'password': config.get('JABBER', 'password'),
-            'resource': config.get('JABBER', 'resource'),
-        }
+        try:
+            configdata = {
+                'jid': config.get('JABBER', 'jid'),
+                'password': config.get('JABBER', 'password'),
+                'resource': config.get('JABBER', 'resource'),
+            }
+        except ConfigParser.NoOptionError, err:
+            sys.stderr.write("ERROR: Config file missing option error. %s\n" % err)
+            sys.exit(-1)
 
         # check mandatory config options supplied
         mandatories = ["jid", "password", ]
