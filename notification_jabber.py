@@ -35,91 +35,89 @@ except ImportError, err:
     sys.stderr.write("ERROR: Couldn't load module. %s\n" % err)
     sys.exit(-1)
 
+__all__ = ['parse_options', 'parse_config', 'send_message', 'main', ]
+
 # metadata
 __author__ = "Alexei Andrushievich"
 __email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv3 or later"
 __description__ = "Notifications via jabber Nagios plugin"
 __url__ = "https://github.com/vint21h/nagios-notification-jabber"
-VERSION = (0, 5, 0)
+VERSION = (0, 6, 0)
 __version__ = '.'.join(map(str, VERSION))
 
 
-def parse_cmd_line():
+def parse_options():
     """
     Commandline options arguments parsing.
     """
 
     # build options and help
-    version = "%%prog %s" % (__version__)
+    version = "%%prog %s" % __version__
     parser = OptionParser(version=version)
-    parser.add_option("-r", "--recipient", action="store", dest="recipient",
-                                        type="string", default="",
-                                        metavar="RECIPIENT",
-                                        help="message recipient Jabber ID")
-    parser.add_option("-m", "--message", metavar="MESSAGE", action="store",
-                                        type="string", dest="message",
-                                        default="", help="message text")
-    parser.add_option("-c", "--config", metavar="CONFIG", action="store",
-                                        type="string", dest="config",
-                                        help="path to config file")
-    parser.add_option("-q", "--quiet", metavar="QUIET", action="store_false",
-                                        default=False, dest="quiet",
-                                        help="be quiet")
+    parser.add_option(
+        "-r", "--recipient", action="store", dest="recipient",
+        type="string", default="", metavar="RECIPIENT",
+        help="message recipient Jabber ID"
+    )
+    parser.add_option(
+        "-m", "--message", metavar="MESSAGE", action="store",
+        type="string", dest="message", default="", help="message text"
+    )
+    parser.add_option(
+        "-c", "--config", metavar="CONFIG", action="store",
+        type="string", dest="config", default="/etc/notification_jabber.ini",
+        help="path to config file"
+    )
+    parser.add_option(
+        "-q", "--quiet", metavar="QUIET", action="store_false",
+        default=False, dest="quiet", help="be quiet"
+    )
 
     options = parser.parse_args(sys.argv)[0]
 
     # check mandatory command line options supplied
     mandatories = ["recipient", "message", ]
     if not all(options.__dict__[mandatory] for mandatory in mandatories):
-        sys.stdout.write("Mandatory command line option missing\n")
-        sys.exit(0)
+        parser.error("Required command line option missing")
 
     return options
 
 
-def check_config_file(ini):
-    """
-    Check config exist.
-    """
-
-    default_ini = "notification_jabber.ini"
-    if ini and os.path.exists(ini):  # user config file path
-        return ini
-    elif os.path.exists(os.path.join("/etc", default_ini)):  # default config file path in /etc
-        return os.path.join("/etc", default_ini)
-    else:
-        sys.stderr.write("ERROR: Config file %s don't exist\n" % ini)
-        sys.exit(0)
-
-
-def parse_config(configini):
+def parse_config(options):
     """
     Get connection settings from config file.
     """
 
-    config = ConfigParser.ConfigParser()
-    try:
-        config.read(configini)
-    except Exception:
-        print "ERROR: Config file read %s error." % (configini)
-        sys.exit(-1)
-    configdata = {
-                    'jid': config.get('JABBER', 'jid'),
-                    'password': config.get('JABBER', 'password'),
-                    'resource': config.get('JABBER', 'resource'),
-    }
+    if os.path.exists(options.config):
+        config = ConfigParser.ConfigParser()
+        try:
+            config.read(options.config)
+        except Exception:
+            if not options.quiet:
+                sys.stderr.write("ERROR: Config file read %s error." % options.config)
+            sys.exit(-1)
 
-    # check mandatory config options supplied
-    mandatories = ["jid", "password", ]
-    if not all(configdata[mandatory] for mandatory in mandatories):
-        sys.stdout.write("Mandatory config option missing\n")
-        exit(0)
+        configdata = {
+            'jid': config.get('JABBER', 'jid'),
+            'password': config.get('JABBER', 'password'),
+            'resource': config.get('JABBER', 'resource'),
+        }
 
-    return configdata
+        # check mandatory config options supplied
+        mandatories = ["jid", "password", ]
+        if not all(configdata[mandatory] for mandatory in mandatories):
+            sys.stdout.write("Required config option missing\n")
+            sys.exit(0)
+
+        return configdata
+    else:
+        if not options.quiet:
+            sys.stderr.write("ERROR: Config file %s does not exist\n" % options.config)
+        sys.exit(0)
 
 
-def send_message(config, recipient, message):
+def send_message(config, options):
     """
     Connect to server and send message.
     """
@@ -131,18 +129,27 @@ def send_message(config, recipient, message):
         client.auth(jid.getNode(), config['password'], config['resource'])
         client.sendInitPresence()
     except Exception, err:
-        sys.stdout.write("ERROR: Couldn't connect or auth on server. %s\n" % err)
+        if not options.quiet:
+            sys.stdout.write("ERROR: Couldn't connect or auth on server. %s\n" % err)
         sys.exit(-1)
-    xmessage = xmpp.Message(recipient, message)
+    xmessage = xmpp.Message(options.recipient, options.message)
     xmessage.setAttr('type', 'chat')
     try:
         client.send(xmessage)
     except Exception, err:
-        sys.stdout.write("ERROR: Couldn't send message. %s\n" % err)
+        if not options.quiet:
+            sys.stdout.write("ERROR: Couldn't send message. %s\n" % err)
         sys.exit(-1)
 
 
+def main():
+    """
+    Program main.
+    """
+
+    options = parse_options()
+    send_message(parse_config(options), options)
+    sys.exit(0)
+
 if __name__ == "__main__":
-    # get options, check and parse config file and send message
-    options = parse_cmd_line()
-    send_message(parse_config(check_config_file(options.config)), options.recipient, options.message)
+    main()

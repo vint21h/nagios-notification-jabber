@@ -10,8 +10,8 @@ A nagios-notification-jabber documentation
 
 Installation
 ------------
-* Obtain your copy of source code from git repository: ``git clone https://github.com/vint21h/nagios-notification-jabber.git``. Or download latest release from https://github.com/vint21h/nagios-notification-jabber/downloads.
-* Run ``./setup.py install`` from repository source tree or unpacked archive under root user.
+* Obtain your copy of source code from git repository: ``git clone https://github.com/vint21h/nagios-notification-jabber.git``. Or download latest release from https://github.com/vint21h/nagios-notification-jabber/tags.
+* Run ``python ./setup.py install`` from repository source tree or unpacked archive under root user.
 
 Configuration
 -------------
@@ -21,14 +21,14 @@ Configuration
 
 ::
 
-    # 'host-notify-by-jabber'
+    # 'host-notify-by-jabber' command
     define command
     {
         command_name    host-notify-by-jabber
         command_line    $NJ$ -r $CONTACTPAGER$ -m "Host '$HOSTALIAS$' is $HOSTSTATE$ - Info: $HOSTOUTPUT$"
     }
 
-    # 'notify-by-jabber'
+    # 'notify-by-jabber' command
     define command
     {
         command_name    notify-by-jabber
@@ -38,6 +38,12 @@ Configuration
 * Add to your contact definition option ``pager`` with your Jabber ID value and add to ``service_notification_commands`` and ``host_notification_commands`` contact definition options ``notify-by-jabber`` and ``host-notify-by-jabber`` values respectively.
 
 * Populate ``/etc/notification_jabber.ini`` with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string.
+
+Licensing
+---------
+nagios-notification-jabber is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+For complete license text see COPYING file.
+
 
 Contacts
 --------
