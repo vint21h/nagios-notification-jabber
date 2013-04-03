@@ -70,7 +70,7 @@ def parse_options():
         help="path to config file"
     )
     parser.add_option(
-        "-q", "--quiet", metavar="QUIET", action="store_false",
+        "-q", "--quiet", metavar="QUIET", action="store_true",
         default=False, dest="quiet", help="be quiet"
     )
 
@@ -107,7 +107,8 @@ def parse_config(options):
         # check mandatory config options supplied
         mandatories = ["jid", "password", ]
         if not all(configdata[mandatory] for mandatory in mandatories):
-            sys.stdout.write("Required config option missing\n")
+            if not options.quiet:
+                sys.stdout.write("Required config option missing\n")
             sys.exit(0)
 
         return configdata
