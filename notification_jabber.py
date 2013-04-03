@@ -43,7 +43,7 @@ __email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv3 or later"
 __description__ = "Notifications via jabber Nagios plugin"
 __url__ = "https://github.com/vint21h/nagios-notification-jabber"
-VERSION = (0, 6, 2)
+VERSION = (0, 6, 3)
 __version__ = '.'.join(map(str, VERSION))
 
 
