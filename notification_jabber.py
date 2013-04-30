@@ -28,8 +28,11 @@ import sys
 
 try:
     import os
+    import warnings
     import ConfigParser
     from optparse import OptionParser
+    # strong hack to supress deprecation warnings called by xmpppy using md5, sha modules and socket.ssl() method
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
     import xmpp
 except ImportError, err:
     sys.stderr.write("ERROR: Couldn't load module. %s\n" % err)
@@ -43,7 +46,7 @@ __email__ = "vint21h@vint21h.pp.ua"
 __licence__ = "GPLv3 or later"
 __description__ = "Notifications via jabber Nagios plugin"
 __url__ = "https://github.com/vint21h/nagios-notification-jabber"
-VERSION = (0, 6, 3)
+VERSION = (0, 6, 4)
 __version__ = '.'.join(map(str, VERSION))
 
 
