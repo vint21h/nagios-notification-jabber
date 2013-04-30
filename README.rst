@@ -36,7 +36,7 @@ Configuration
 
 * Add to your contact definition option ``pager`` with your Jabber ID value and add to ``service_notification_commands`` and ``host_notification_commands`` contact definition options ``service-notify-by-jabber`` and ``host-notify-by-jabber`` values respectively.
 
-* Populate ``/etc/notification_jabber.ini`` with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string. Attention: nagios user must have ``notification_jabber.ini`` read permissions.
+* Populate ``/etc/nagios/notification_jabber.ini`` with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string. Attention: nagios user must have ``notification_jabber.ini`` read permissions.
 
 Licensing
 ---------
