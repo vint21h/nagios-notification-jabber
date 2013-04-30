@@ -22,7 +22,7 @@ setup(
     },
     data_files=[
         ('/usr/share/doc/nagios-notification-jabber/', SHARED_FILES),
-        ('/etc/', CONFIG_FILES),
+        ('/etc/nagios/', CONFIG_FILES),
     ],
     author=__author__,
     author_email=__email__,
