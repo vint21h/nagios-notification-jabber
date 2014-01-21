@@ -5,7 +5,7 @@
 # nagios-notification-jabber
 # notification_jabber.py
 
-# Copyright (c) 2011-2012 Alexei Andrushievich <vint21h@vint21h.pp.ua>
+# Copyright (c) 2011-2014 Alexei Andrushievich <vint21h@vint21h.pp.ua>
 # Notifications via jabber Nagios plugin [https://github.com/vint21h/nagios-notification-jabber]
 #
 # This file is part of nagios-notification-jabber.
@@ -41,7 +41,7 @@ except ImportError, err:
 __all__ = ['main', ]
 
 # metadata
-VERSION = (0, 6, 7)
+VERSION = (0, 6, 8)
 __version__ = '.'.join(map(str, VERSION))
 
 
