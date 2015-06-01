@@ -20,14 +20,14 @@ Configuration
 
 ::
 
-    # 'host-notify-by-jabber' command
+    # "host-notify-by-jabber" command
     define command
     {
         command_name    host-notify-by-jabber
         command_line    /usr/bin/notification_jabber.py -r $CONTACTPAGER$ -m "Host '$HOSTALIAS$' is $HOSTSTATE$ - Info: $HOSTOUTPUT$"
     }
 
-    # 'service-notify-by-jabber' command
+    # "service-notify-by-jabber" command
     define command
     {
         command_name    service-notify-by-jabber
@@ -49,3 +49,5 @@ Contacts
 **Project Website**: https://github.com/vint21h/nagios-notification-jabber
 
 **Author**: Alexei Andrushievich <vint21h@vint21h.pp.ua>
+
+For other authors list see AUTHORS file.

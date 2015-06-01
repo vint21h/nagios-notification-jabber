@@ -4,32 +4,33 @@
 # nagios-notification-jabber
 # setup.py
 
+from __future__ import unicode_literals
 from setuptools import setup, find_packages
 
-VERSION = (0, 6, 8)
-__version__ = '.'.join(map(str, VERSION))
+VERSION = (0, 7, 0)
+__version__ = ".".join(map(str, VERSION))
 
-DATA = ['README.rst', 'COPYING', 'notification_jabber.ini', ]
+DATA = ["README.rst", "COPYING", "AUTHORS", "notification_jabber.ini", ]
 
 setup(
     name="nagios-notification-jabber",
     version=__version__,
     packages=find_packages(),
-    scripts=['notification_jabber.py', ],
-    install_requires=['xmpppy', ],
+    scripts=["notification_jabber.py", ],
+    install_requires=["xmpppy", ],
     package_data={
-        'nagios-notification-jabber': DATA,
+        "nagios-notification-jabber": DATA,
     },
     data_files=[
-        ('share/doc/nagios-notification-jabber/', DATA),
+        ("share/doc/nagios-notification-jabber/", DATA),
     ],
     author="Alexei Andrushievich",
     author_email="vint21h@vint21h.pp.ua",
     description="Notifications via jabber Nagios plugin",
-    long_description=open('README.rst').read(),
+    long_description=open("README.rst").read(),
     license="GPLv3 or later",
     url="https://github.com/vint21h/nagios-notification-jabber",
-    download_url="https://github.com/vint21h/nagios-notification-jabber/archive/%s.tar.gz" % __version__,
+    download_url="https://github.com/vint21h/nagios-notification-jabber/archive/{version}.tar.gz".format(version=__version__),
     zip_safe=False,
     include_package_data=True,
     classifiers=[

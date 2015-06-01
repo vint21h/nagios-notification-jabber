@@ -5,7 +5,7 @@
 # nagios-notification-jabber
 # notification_jabber.py
 
-# Copyright (c) 2011-2014 Alexei Andrushievich <vint21h@vint21h.pp.ua>
+# Copyright (c) 2011-2015 Alexei Andrushievich <vint21h@vint21h.pp.ua>
 # Notifications via jabber Nagios plugin [https://github.com/vint21h/nagios-notification-jabber]
 #
 # This file is part of nagios-notification-jabber.
@@ -24,6 +24,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+from __future__ import unicode_literals
 import sys
 
 try:
@@ -31,18 +32,18 @@ try:
     import warnings
     import ConfigParser
     from optparse import OptionParser
-    # strong hack to supress deprecation warnings called by xmpppy using md5, sha modules and socket.ssl() method
+    # strong hack to suppress deprecation warnings called by xmpppy using md5, sha modules and socket.ssl() method
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     import xmpp
-except ImportError, err:
-    sys.stderr.write("ERROR: Couldn't load module. %s\n" % err)
+except (ImportError, ), err:
+    sys.stderr.write("ERROR: Couldn't load module. {err}\n".format(err=err))
     sys.exit(-1)
 
-__all__ = ['main', ]
+__all__ = ["main", ]
 
 # metadata
-VERSION = (0, 6, 8)
-__version__ = '.'.join(map(str, VERSION))
+VERSION = (0, 7, 0)
+__version__ = ".".join(map(str, VERSION))
 
 
 def parse_options():
@@ -51,7 +52,7 @@ def parse_options():
     """
 
     # build options and help
-    version = "%%prog %s" % __version__
+    version = "%%prog {version}".format(version=__version__)
     parser = OptionParser(version=version)
     parser.add_option(
         "-r", "--recipient", action="store", dest="recipient",
@@ -91,19 +92,19 @@ def parse_config(options):
         config = ConfigParser.ConfigParser()
         try:
             config.read(options.config)
-        except Exception:
+        except Exception, err:
             if not options.quiet:
-                sys.stderr.write("ERROR: Config file read %s error." % options.config)
+                sys.stderr.write("ERROR: Config file read {config} error. {err}".format(config=options.config, err=err))
             sys.exit(-1)
 
         try:
             configdata = {
-                'jid': config.get('JABBER', 'jid'),
-                'password': config.get('JABBER', 'password'),
-                'resource': config.get('JABBER', 'resource'),
+                "jid": config.get("JABBER", "jid"),
+                "password": config.get("JABBER", "password"),
+                "resource": config.get("JABBER", "resource"),
             }
         except ConfigParser.NoOptionError, err:
-            sys.stderr.write("ERROR: Config file missing option error. %s\n" % err)
+            sys.stderr.write("ERROR: Config file missing option error. {err}\n".format(err=err))
             sys.exit(-1)
 
         # check mandatory config options supplied
@@ -116,7 +117,7 @@ def parse_config(options):
         return configdata
     else:
         if not options.quiet:
-            sys.stderr.write("ERROR: Config file %s does not exist\n" % options.config)
+            sys.stderr.write("ERROR: Config file {config} does not exist\n".format(config=options.config))
         sys.exit(0)
 
 
@@ -125,23 +126,23 @@ def send_message(config, options):
     Connect to server and send message.
     """
 
-    jid = xmpp.JID(config['jid'])  # JID object
+    jid = xmpp.JID(config["jid"])  # JID object
     client = xmpp.Client(jid.getDomain(), debug=[])
     try:
         client.connect()
-        client.auth(jid.getNode(), config['password'], config['resource'])
+        client.auth(jid.getNode(), config["password"], config["resource"])
         client.sendInitPresence()
     except Exception, err:
         if not options.quiet:
-            sys.stdout.write("ERROR: Couldn't connect or auth on server. %s\n" % err)
+            sys.stdout.write("ERROR: Couldn't connect or auth on server. {err}\n".format(err=err))
         sys.exit(-1)
     xmessage = xmpp.Message(options.recipient, options.message)
-    xmessage.setAttr('type', 'chat')
+    xmessage.setAttr("type", "chat")
     try:
         client.send(xmessage)
     except Exception, err:
         if not options.quiet:
-            sys.stdout.write("ERROR: Couldn't send message. %s\n" % err)
+            sys.stdout.write("ERROR: Couldn't send message. {err}\n".format(err=err))
         sys.exit(-1)
 
 
@@ -155,4 +156,5 @@ def main():
     sys.exit(0)
 
 if __name__ == "__main__":
+
     main()

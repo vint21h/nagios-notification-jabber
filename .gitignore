@@ -1,3 +1,6 @@
+# nagios-notification-jabber
+# .gitignore
+
 .*.swp
 *.pyc
 *.pyo
