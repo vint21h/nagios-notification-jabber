@@ -4,10 +4,9 @@
 # nagios-notification-jabber
 # setup.py
 
-from __future__ import unicode_literals
 from setuptools import setup, find_packages
 
-VERSION = (0, 7, 0)
+VERSION = (0, 7, 1)
 __version__ = ".".join(map(str, VERSION))
 
 DATA = ["README.rst", "COPYING", "AUTHORS", "notification_jabber.ini", ]
