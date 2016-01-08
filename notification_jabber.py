@@ -5,7 +5,7 @@
 # nagios-notification-jabber
 # notification_jabber.py
 
-# Copyright (c) 2011-2015 Alexei Andrushievich <vint21h@vint21h.pp.ua>
+# Copyright (c) 2011-2016 Alexei Andrushievich <vint21h@vint21h.pp.ua>
 # Notifications via jabber Nagios plugin [https://github.com/vint21h/nagios-notification-jabber]
 #
 # This file is part of nagios-notification-jabber.
@@ -32,6 +32,7 @@ try:
     import warnings
     import ConfigParser
     from optparse import OptionParser
+    from time import sleep
     # strong hack to suppress deprecation warnings called by xmpppy using md5, sha modules and socket.ssl() method
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     import xmpp
@@ -42,8 +43,12 @@ except (ImportError, ), err:
 __all__ = ["main", ]
 
 # metadata
-VERSION = (0, 7, 0)
+VERSION = (0, 8, 0)
 __version__ = ".".join(map(str, VERSION))
+
+
+# some global variables
+CHAT, GROUP_CHAT = "chat", "groupchat"
 
 
 def parse_options():
@@ -57,11 +62,15 @@ def parse_options():
     parser.add_option(
         "-r", "--recipient", action="store", dest="recipient",
         type="string", default="", metavar="RECIPIENT",
-        help="message recipient Jabber ID"
+        help="message recipient Jabber ID or Jabber MUC ID"
     )
     parser.add_option(
         "-m", "--message", metavar="MESSAGE", action="store",
         type="string", dest="message", default="", help="message text"
+    )
+    parser.add_option(
+        "-t", "--message-type", metavar="TYPE", action="store",
+        type="string", dest="type", default=CHAT, help="message type ('{chat}' or '{groupchat}')".format(**{"chat": CHAT, "groupchat": GROUP_CHAT, })
     )
     parser.add_option(
         "-c", "--config", metavar="CONFIG", action="store",
@@ -76,9 +85,12 @@ def parse_options():
     options = parser.parse_args(sys.argv)[0]
 
     # check mandatory command line options supplied
-    mandatories = ["recipient", "message", ]
-    if not all(options.__dict__[mandatory] for mandatory in mandatories):
+    if not all(options.__dict__[mandatory] for mandatory in ["recipient", "message", "type", ]):
         parser.error("Required command line option missing")
+
+    # check message type support
+    if options.type not in [CHAT, GROUP_CHAT, ]:
+        parser.error("Type option must be {chat} or {groupchat}".format(**{"chat": CHAT, "groupchat": GROUP_CHAT, }))
 
     return options
 
@@ -92,9 +104,9 @@ def parse_config(options):
         config = ConfigParser.ConfigParser()
         try:
             config.read(options.config)
-        except Exception, err:
+        except Exception, error:
             if not options.quiet:
-                sys.stderr.write("ERROR: Config file read {config} error. {err}".format(config=options.config, err=err))
+                sys.stderr.write("ERROR: Config file read {config} error. {error}".format(config=options.config, error=error))
             sys.exit(-1)
 
         try:
@@ -103,8 +115,8 @@ def parse_config(options):
                 "password": config.get("JABBER", "password"),
                 "resource": config.get("JABBER", "resource"),
             }
-        except ConfigParser.NoOptionError, err:
-            sys.stderr.write("ERROR: Config file missing option error. {err}\n".format(err=err))
+        except ConfigParser.NoOptionError, error:
+            sys.stderr.write("ERROR: Config file missing option error. {error}\n".format(error=error))
             sys.exit(-1)
 
         # check mandatory config options supplied
@@ -131,18 +143,23 @@ def send_message(config, options):
     try:
         client.connect()
         client.auth(jid.getNode(), config["password"], config["resource"])
-        client.sendInitPresence()
-    except Exception, err:
+        client.sendInitPresence(requestRoster=0)
+    except Exception, error:
         if not options.quiet:
-            sys.stdout.write("ERROR: Couldn't connect or auth on server. {err}\n".format(err=err))
+            sys.stdout.write("ERROR: Couldn't connect or auth on server. {error}\n".format(error=error))
         sys.exit(-1)
+
     xmessage = xmpp.Message(options.recipient, options.message)
-    xmessage.setAttr("type", "chat")
+    xmessage.setAttr("type", options.type)
+
     try:
+        if options.type == GROUP_CHAT:
+            client.send(xmpp.Presence(to="{recipient}/{jid}".format(**{"recipient": options.recipient, "jid": config["jid"]})))
+            sleep(1)
         client.send(xmessage)
-    except Exception, err:
+    except Exception, error:
         if not options.quiet:
-            sys.stdout.write("ERROR: Couldn't send message. {err}\n".format(err=err))
+            sys.stdout.write("ERROR: Couldn't send message. {error}\n".format(error=error))
         sys.exit(-1)
 
 

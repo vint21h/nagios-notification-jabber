@@ -6,7 +6,7 @@
 
 from setuptools import setup, find_packages
 
-VERSION = (0, 7, 1)
+VERSION = (0, 8, 0)
 __version__ = ".".join(map(str, VERSION))
 
 DATA = ["README.rst", "COPYING", "AUTHORS", "notification_jabber.ini", ]
@@ -16,7 +16,7 @@ setup(
     version=__version__,
     packages=find_packages(),
     scripts=["notification_jabber.py", ],
-    install_requires=["xmpppy", ],
+    install_requires=["xmpppy==0.5.0rc1", ],
     package_data={
         "nagios-notification-jabber": DATA,
     },
