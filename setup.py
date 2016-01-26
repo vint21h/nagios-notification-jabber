@@ -6,7 +6,7 @@
 
 from setuptools import setup, find_packages
 
-VERSION = (0, 7, 2)
+VERSION = (0, 7, 3)
 __version__ = ".".join(map(str, VERSION))
 
 DATA = ["README.rst", "COPYING", "AUTHORS", "notification_jabber.ini", ]
@@ -39,7 +39,6 @@ setup(
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Operating System :: Unix",
         "Programming Language :: Python :: 2.6",
-        "Programming Language :: Python :: 2.7",
         "Topic :: System :: Monitoring",
         "Topic :: Utilities",
     ]
