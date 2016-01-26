@@ -36,7 +36,11 @@ Configuration
 
 * Add to your contact definition option ``pager`` with your Jabber ID value and add to ``service_notification_commands`` and ``host_notification_commands`` contact definition options ``service-notify-by-jabber`` and ``host-notify-by-jabber`` values respectively.
 
-* Copy ``/usr/share/doc/nagios-notification-jabber/notification_jabber.ini`` to ``/etc/nagios`` with your nagios bot credentials and optionaly resource by Nagios instance hostname or custom string. Attention: nagios user must have ``notification_jabber.ini`` read permissions.
+* Copy ``/usr/share/doc/nagios-notification-jabber/notification_jabber.ini`` to ``/etc/nagios`` with your nagios bot credentials and optional resource by Nagios instance hostname or custom string. Attention: nagios user must have ``notification_jabber.ini`` read permissions.
+
+New Python support
+------------------
+Because original ``xmpppy`` library development stopped, it does not support new python versions. Therefore ``nagios-notification-jabber`` does not working with Python 2.7 and higher. If you want use ``nagios-notification-jabber`` with new Python versions you must install any ``xmpppy`` fork with new Python versions support instead of ``xmppy``.
 
 Licensing
 ---------
