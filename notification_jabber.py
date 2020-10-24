@@ -5,8 +5,8 @@
 # nagios-notification-jabber
 # notification_jabber.py
 
-# Copyright (c) 2011-2016 Alexei Andrushievich <vint21h@vint21h.pp.ua>
-# Notifications via jabber Nagios plugin [https://github.com/vint21h/nagios-notification-jabber]
+# Copyright (c) 2011-2020 Alexei Andrushievich <vint21h@vint21h.pp.ua>
+# Notifications via jabber Nagios plugin [https://github.com/vint21h/nagios-notification-jabber/]  # noqa: E501
 #
 # This file is part of nagios-notification-jabber.
 #
@@ -25,22 +25,20 @@
 
 
 from __future__ import unicode_literals
+
+import os
 import sys
+from time import sleep
+from optparse import OptionParser
 
-try:
-    import os
-    import warnings
-    import ConfigParser
-    from optparse import OptionParser
-    from time import sleep
-    # strong hack to suppress deprecation warnings called by xmpppy using md5, sha modules and socket.ssl() method
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
-    import xmpp
-except (ImportError, ), err:
-    sys.stderr.write("ERROR: Couldn't load module. {err}\n".format(err=err))
-    sys.exit(-1)
+import xmpp
+import ConfigParser
 
-__all__ = ["main", ]
+
+__all__ = [
+    "main",
+]
+
 
 # metadata
 VERSION = (0, 8, 0)
@@ -59,37 +57,86 @@ def parse_options():
     version = "%%prog {version}".format(version=__version__)
     parser = OptionParser(version=version)
     parser.add_option(
-        "-r", "--recipient", action="store", dest="recipient",
-        type="string", default="", metavar="RECIPIENT",
-        help="message recipient Jabber ID or Jabber MUC ID"
+        "-r",
+        "--recipient",
+        action="store",
+        dest="recipient",
+        type="string",
+        default="",
+        metavar="RECIPIENT",
+        help="message recipient Jabber ID or Jabber MUC ID",
     )
     parser.add_option(
-        "-m", "--message", metavar="MESSAGE", action="store",
-        type="string", dest="message", default="", help="message text"
+        "-m",
+        "--message",
+        metavar="MESSAGE",
+        action="store",
+        type="string",
+        dest="message",
+        default="",
+        help="message text",
     )
     parser.add_option(
-        "-t", "--message-type", metavar="TYPE", action="store",
-        type="string", dest="type", default=CHAT, help="message type ('{chat}' or '{groupchat}')".format(**{"chat": CHAT, "groupchat": GROUP_CHAT, })
+        "-t",
+        "--message-type",
+        metavar="TYPE",
+        action="store",
+        type="string",
+        dest="type",
+        default=CHAT,
+        help="message type ('{chat}' or '{groupchat}')".format(
+            **{
+                "chat": CHAT,
+                "groupchat": GROUP_CHAT,
+            }
+        ),
     )
     parser.add_option(
-        "-c", "--config", metavar="CONFIG", action="store",
-        type="string", dest="config", default="/etc/nagios/notification_jabber.ini",
-        help="path to config file"
+        "-c",
+        "--config",
+        metavar="CONFIG",
+        action="store",
+        type="string",
+        dest="config",
+        default="/etc/nagios/notification_jabber.ini",
+        help="path to config file",
     )
     parser.add_option(
-        "-q", "--quiet", metavar="QUIET", action="store_true",
-        default=False, dest="quiet", help="be quiet"
+        "-q",
+        "--quiet",
+        metavar="QUIET",
+        action="store_true",
+        default=False,
+        dest="quiet",
+        help="be quiet",
     )
 
     options = parser.parse_args(sys.argv)[0]
 
     # check mandatory command line options supplied
-    if not all(options.__dict__[mandatory] for mandatory in ["recipient", "message", "type", ]):
+    if not all(
+        options.__dict__[mandatory]
+        for mandatory in [
+            "recipient",
+            "message",
+            "type",
+        ]
+    ):
         parser.error("Required command line option missing")
 
     # check message type support
-    if options.type not in [CHAT, GROUP_CHAT, ]:
-        parser.error("Type option must be {chat} or {groupchat}".format(**{"chat": CHAT, "groupchat": GROUP_CHAT, }))
+    if options.type not in [
+        CHAT,
+        GROUP_CHAT,
+    ]:
+        parser.error(
+            "Type option must be {chat} or {groupchat}".format(
+                **{
+                    "chat": CHAT,
+                    "groupchat": GROUP_CHAT,
+                }
+            )
+        )
 
     return options
 
@@ -103,9 +150,13 @@ def parse_config(options):
         config = ConfigParser.ConfigParser()
         try:
             config.read(options.config)
-        except Exception, error:
+        except Exception as error:
             if not options.quiet:
-                sys.stderr.write("ERROR: Config file read {config} error. {error}".format(config=options.config, error=error))
+                sys.stderr.write(
+                    "ERROR: Config file read {config} error. {error}".format(
+                        config=options.config, error=error
+                    )
+                )
             sys.exit(-1)
 
         try:
@@ -114,12 +165,17 @@ def parse_config(options):
                 "password": config.get("JABBER", "password"),
                 "resource": config.get("JABBER", "resource"),
             }
-        except ConfigParser.NoOptionError, error:
-            sys.stderr.write("ERROR: Config file missing option error. {error}\n".format(error=error))
+        except ConfigParser.NoOptionError as error:
+            sys.stderr.write(
+                "ERROR: Config file missing option error. {error}\n".format(error=error)
+            )
             sys.exit(-1)
 
         # check mandatory config options supplied
-        mandatories = ["jid", "password", ]
+        mandatories = [
+            "jid",
+            "password",
+        ]
         if not all(configdata[mandatory] for mandatory in mandatories):
             if not options.quiet:
                 sys.stdout.write("Required config option missing\n")
@@ -128,7 +184,11 @@ def parse_config(options):
         return configdata
     else:
         if not options.quiet:
-            sys.stderr.write("ERROR: Config file {config} does not exist\n".format(config=options.config))
+            sys.stderr.write(
+                "ERROR: Config file {config} does not exist\n".format(
+                    config=options.config
+                )
+            )
         sys.exit(0)
 
 
@@ -143,9 +203,13 @@ def send_message(config, options):
         client.connect()
         client.auth(jid.getNode(), config["password"], config["resource"])
         client.sendInitPresence(requestRoster=0)
-    except Exception, error:
+    except Exception as error:
         if not options.quiet:
-            sys.stdout.write("ERROR: Couldn't connect or auth on server. {error}\n".format(error=error))
+            sys.stdout.write(
+                "ERROR: Couldn't connect or auth on server. {error}\n".format(
+                    error=error
+                )
+            )
         sys.exit(-1)
 
     xmessage = xmpp.Message(options.recipient, options.message)
@@ -153,12 +217,20 @@ def send_message(config, options):
 
     try:
         if options.type == GROUP_CHAT:
-            client.send(xmpp.Presence(to="{recipient}/{jid}".format(**{"recipient": options.recipient, "jid": config["jid"]})))
+            client.send(
+                xmpp.Presence(
+                    to="{recipient}/{jid}".format(
+                        **{"recipient": options.recipient, "jid": config["jid"]}
+                    )
+                )
+            )
             sleep(1)
         client.send(xmessage)
-    except Exception, error:
+    except Exception as error:
         if not options.quiet:
-            sys.stdout.write("ERROR: Couldn't send message. {error}\n".format(error=error))
+            sys.stdout.write(
+                "ERROR: Couldn't send message. {error}\n".format(error=error)
+            )
         sys.exit(-1)
 
 
@@ -170,6 +242,7 @@ def main():
     options = parse_options()
     send_message(parse_config(options), options)
     sys.exit(0)
+
 
 if __name__ == "__main__":
 
