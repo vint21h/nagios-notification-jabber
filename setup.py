@@ -22,7 +22,7 @@ DATA = [
 setup(
     name="nagios-notification-jabber",
     version=__version__,
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests.*", "tests"]),
     scripts=[
         "notification_jabber.py",
     ],
