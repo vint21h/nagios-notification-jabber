@@ -49,9 +49,6 @@ __all__ = [
 VERSION = (0, 8, 0)
 __version__ = ".".join(map(str, VERSION))
 
-# some global variables
-CHAT, GROUP_CHAT = "chat", "groupchat"
-
 
 class NotificationJabber(object):
     """
@@ -107,10 +104,10 @@ class NotificationJabber(object):
             dest="type",
             default=self.MESSAGE_TYPE_CHAT,
             choices=[self.MESSAGE_TYPE_CHAT, self.MESSAGE_TYPE_GROUP_CHAT],
-            help="message type ('{chat}' or '{groupchat}')".format(
+            help="message type ('{chat}' or '{group-chat}')".format(
                 **{
-                    "chat": CHAT,
-                    "groupchat": GROUP_CHAT,
+                    "chat": self.MESSAGE_TYPE_CHAT,
+                    "group-chat": self.MESSAGE_TYPE_GROUP_CHAT,
                 }
             ),
         )
@@ -146,8 +143,6 @@ class NotificationJabber(object):
             parser.error(message="Required recipient option missing")
         if not options.message:
             parser.error(message="Required message option missing")
-        if not options.type:
-            parser.error(message="Required message type option missing")
 
         return options
 
