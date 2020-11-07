@@ -147,7 +147,7 @@ def test__get_config(mocker):
             "builtins.open",
             mock_open(read_data=data),
         )
-    except ModuleNotFoundError:
+    except ImportError:
         mocker.patch(
             "__builtin__.open",
             mock_open(read_data=data),
@@ -192,7 +192,7 @@ def test__get_config__error(mocker):
             "builtins.open",
             mock_open(read_data=data),
         )
-    except ModuleNotFoundError:
+    except ImportError:
         mocker.patch(
             "__builtin__.open",
             mock_open(read_data=data),
@@ -241,7 +241,7 @@ def test__get_config__no_section_option_error(mocker):
             "builtins.open",
             mock_open(read_data=data),
         )
-    except ModuleNotFoundError:
+    except ImportError:
         mocker.patch(
             "__builtin__.open",
             mock_open(read_data=data),
