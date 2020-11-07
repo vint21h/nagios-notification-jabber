@@ -168,7 +168,7 @@ class NotificationJabber(object):
                 sys.exit(-1)
 
             try:
-                data = {
+                return {
                     "jid": config.get("JABBER", "jid"),
                     "password": config.get("JABBER", "password"),
                     "resource": config.get("JABBER", "resource"),
@@ -181,17 +181,6 @@ class NotificationJabber(object):
                 )
                 sys.exit(-1)
 
-            # check mandatory config options supplied
-            if not data.get("jid", None):
-                if not self.options.quiet:
-                    sys.stdout.write("Required jid config option missing\n")
-                sys.exit(0)
-            if not data.get("password", None):
-                if not self.options.quiet:
-                    sys.stdout.write("Required password config option missing\n")
-                sys.exit(0)
-
-            return data
         else:
             if not self.options.quiet:
                 sys.stderr.write(
