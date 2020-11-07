@@ -8,12 +8,15 @@ from __future__ import unicode_literals
 
 from io import StringIO
 from argparse import Namespace
-from unittest.mock import mock_open
 
 import pytest
 import contextlib2
 
 
+try:
+    from unittest.mock import mock_open
+except ImportError:
+    from mock import mock_open
 try:
     from pytest_mock.plugin import MockerFixture  # pylint: disable=W0611  # noqa: F401
 except ImportError:

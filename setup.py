@@ -113,6 +113,7 @@ setup(
             "contextlib2==0.6.0.post1",
             "coverage==5.3",
             "coveralls==1.11.1",
+            "mock==4.0.2",
             "pygments==2.5.2",
             "pytest-cov==2.10.1",
             "pytest-mock==2.0.0",
