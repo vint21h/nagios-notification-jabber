@@ -173,7 +173,7 @@ class NotificationJabber(object):
                     "password": config.get("JABBER", "password"),
                     "resource": config.get("JABBER", "resource"),
                 }
-            except (NoOptionError, NoSectionError, KeyError) as error:
+            except (KeyError, NoOptionError, NoSectionError) as error:
                 sys.stderr.write(
                     "ERROR: Config file missing section/option error. {error}\n".format(
                         error=error
