@@ -153,9 +153,8 @@ def test__get_config(mocker):
             mock_open(read_data=data),
         )
     notifier = NotificationJabber()
-    result = notifier._get_config()
 
-    assert result == expected  # nosec: B101
+    assert notifier.config == expected  # nosec: B101
 
 
 def test__get_config__error(mocker):
