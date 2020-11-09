@@ -167,7 +167,7 @@ def test__get_config__error(mocker):
 
     out = StringIO()
     data = """
-    JABBER]
+    [JABBER
     jid = test@example.com
     password = secret
     resource =
