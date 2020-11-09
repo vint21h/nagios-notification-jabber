@@ -166,12 +166,6 @@ def test__get_config__error(mocker):
     """
 
     out = StringIO()
-    data = """
-    [JABBER
-    jid = test@example.com
-    password = secret
-    resource =
-    """
     mocker.patch(
         "sys.argv",
         [
@@ -189,12 +183,12 @@ def test__get_config__error(mocker):
     try:
         mocker.patch(
             "builtins.open",
-            mock_open(read_data=data),
+            return_value=IOError(),
         )
     except ImportError:
         mocker.patch(
             "__builtin__.open",
-            mock_open(read_data=data),
+            return_value=IOError(),
         )
 
     with pytest.raises(SystemExit):
