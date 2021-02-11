@@ -5,7 +5,7 @@
 # nagios-notification-jabber
 # notification_jabber.py
 
-# Copyright (c) 2011-2020 Alexei Andrushievich <vint21h@vint21h.pp.ua>
+# Copyright (c) 2011-2021 Alexei Andrushievich <vint21h@vint21h.pp.ua>
 # Notifications via jabber Nagios plugin [https://github.com/vint21h/nagios-notification-jabber/]  # noqa: E501
 #
 # This file is part of nagios-notification-jabber.
