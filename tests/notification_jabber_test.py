@@ -118,10 +118,10 @@ def test__get_config(mocker):
     """
 
     data = """
-    [JABBER]
-    jid = test@example.com
-    password = secret
-    resource =
+[JABBER]
+jid = test@example.com
+password = secret
+resource =
     """
     expected = {
         "jid": "test@example.com",

@@ -169,9 +169,9 @@ class NotificationJabber(object):
 
             try:
                 return {
-                    "jid": config.get("JABBER", "jid"),
-                    "password": config.get("JABBER", "password"),
-                    "resource": config.get("JABBER", "resource"),
+                    "jid": config.get(section="JABBER", option="jid"),
+                    "password": config.get(section="JABBER", option="password"),
+                    "resource": config.get(section="JABBER", option="resource"),
                 }
             except (KeyError, NoOptionError, NoSectionError) as error:
                 sys.stderr.write(
