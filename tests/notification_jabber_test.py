@@ -41,8 +41,6 @@ def test__get_options(mocker: MockerFixture) -> None:
             "notification_jabber.py",
             "-r",
             "test@example.com",
-            "-t",
-            "chat",
             "-m",
             "TEST",
             "-c",
@@ -54,7 +52,6 @@ def test__get_options(mocker: MockerFixture) -> None:
         return_value={
             "jid": "test@example.com",
             "password": "secret",
-            "resource": "",
         },
     )
     notifier = NotificationJabber()
@@ -110,12 +107,10 @@ def test__get_config(mocker: MockerFixture) -> None:
     [JABBER]
     jid = test@example.com
     password = secret
-    resource =
     """
     expected = {
         "jid": "test@example.com",
         "password": "secret",
-        "resource": "",
     }
     mocker.patch(
         "sys.argv",
@@ -123,8 +118,6 @@ def test__get_config(mocker: MockerFixture) -> None:
             "notification_jabber.py",
             "-r",
             "test@example.com",
-            "-t",
-            "chat",
             "-m",
             "TEST",
             "-c",
@@ -155,8 +148,6 @@ def test__get_config__error(mocker: MockerFixture) -> None:
             "notification_jabber.py",
             "-r",
             "test@example.com",
-            "-t",
-            "chat",
             "-m",
             "TEST",
             "-c",
@@ -190,7 +181,6 @@ def test__get_config__no_section_option_error(mocker: MockerFixture) -> None:
     data = """
     [JABBER]
     password = secret
-    resource =
     """
     mocker.patch(
         "sys.argv",
@@ -198,8 +188,6 @@ def test__get_config__no_section_option_error(mocker: MockerFixture) -> None:
             "notification_jabber.py",
             "-r",
             "test@example.com",
-            "-t",
-            "chat",
             "-m",
             "TEST",
             "-c",
@@ -210,7 +198,6 @@ def test__get_config__no_section_option_error(mocker: MockerFixture) -> None:
         "builtins.open",
         mock_open(read_data=data),
     )
-
     with pytest.raises(SystemExit):
         with contextlib2.redirect_stderr(out):
             NotificationJabber()
@@ -235,8 +222,6 @@ def test__get_config__no_config_error(mocker: MockerFixture) -> None:
             "notification_jabber.py",
             "-r",
             "test@example.com",
-            "-t",
-            "chat",
             "-m",
             "TEST",
         ],

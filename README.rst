@@ -38,7 +38,10 @@ Configuration
 
 * Add to your contact definition option ``pager`` with your Jabber ID value and add to ``service_notification_commands`` and ``host_notification_commands`` contact definition options ``service-notify-by-jabber`` and ``host-notify-by-jabber`` values respectively.
 
-* Copy ``/usr/share/doc/nagios-notification-jabber/notification_jabber.ini`` to ``/etc/nagios`` with your nagios bot credentials and optional resource by Nagios instance hostname or custom string. Attention: nagios user must have ``notification_jabber.ini`` read permissions.
+* Copy ``/usr/share/doc/nagios-notification-jabber/notification_jabber.ini`` to ``/etc/nagios`` with your nagios bot credentials. Attention: nagios user must have ``notification_jabber.ini`` read permissions.
+
+nagios-notification-jabber is able to send message to MUC rooms without any additional configuration, just specify MUC room ID as a notification recipient.
+Also yu can specify notification resource just by adding it to JID in the config file: ``jid = nagios@example.com/bot``
 
 Licensing
 ---------
@@ -47,7 +50,7 @@ For complete license text see COPYING file.
 
 Contacts
 --------
-**Project Website**: https://github.com/vint21h/nagios-notification-jabber
+**Project Website**: https://github.com/vint21h/nagios-notification-jabber/
 
 **Author**: Alexei Andrushievich <vint21h@vint21h.pp.ua>
 

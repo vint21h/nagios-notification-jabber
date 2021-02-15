@@ -26,12 +26,11 @@
 
 import os
 import sys
-from time import sleep
-from typing import Dict, List  # pylint: disable=W0611
+from typing import Any, Dict, List  # pylint: disable=W0611
 from configparser import ConfigParser, NoOptionError, NoSectionError
 from argparse import Namespace, ArgumentParser  # pylint: disable=W0611  # noqa: F401
 
-from xmpp import JID, Client, Message, Presence
+from slixmpp import ClientXMPP
 
 
 __all__ = [
@@ -44,13 +43,10 @@ VERSION = (0, 8, 0)
 __version__ = ".".join(map(str, VERSION))
 
 
-class NotificationJabber(object):
+class NotificationJabber(ClientXMPP):
     """
     Notifications via jabber Nagios plugin.
     """
-
-    MESSAGE_TYPE_CHAT = "chat"  # type: str
-    MESSAGE_TYPE_GROUP_CHAT = "groupchat"  # type: str
 
     def __init__(self) -> None:
         """
@@ -60,7 +56,13 @@ class NotificationJabber(object):
         self.options = self._get_options()
         self.config = self._get_config()
 
-    def _get_options(self) -> Namespace:
+        super(NotificationJabber, self).__init__(
+            jid=self.config["jid"], password=self.config["password"]
+        )
+        self.add_event_handler("session_start", self._start)
+
+    @staticmethod
+    def _get_options() -> Namespace:
         """
         Parse commandline options arguments.
 
@@ -88,22 +90,6 @@ class NotificationJabber(object):
             dest="message",
             default="",
             help="message text",
-        )
-        parser.add_argument(
-            "-t",
-            "--message-type",
-            metavar="TYPE",
-            action="store",
-            type=str,
-            dest="type",
-            default=self.MESSAGE_TYPE_CHAT,
-            choices=[self.MESSAGE_TYPE_CHAT, self.MESSAGE_TYPE_GROUP_CHAT],
-            help="message type ('{chat}' or '{group-chat}')".format(
-                **{
-                    "chat": self.MESSAGE_TYPE_CHAT,
-                    "group-chat": self.MESSAGE_TYPE_GROUP_CHAT,
-                }
-            ),
         )
         parser.add_argument(
             "-c",
@@ -165,7 +151,6 @@ class NotificationJabber(object):
                 return {
                     "jid": config.get(section="JABBER", option="jid"),
                     "password": config.get(section="JABBER", option="password"),
-                    "resource": config.get(section="JABBER", option="resource"),
                 }
             except (KeyError, NoOptionError, NoSectionError) as error:
                 sys.stderr.write(
@@ -184,76 +169,29 @@ class NotificationJabber(object):
                 )
             sys.exit(0)
 
-    def _get_connection(self) -> Client:
+    async def _start(self, event: Dict[str, Any]) -> None:
         """
-        Get and return connection to jabber server.
+        Process the session_start event.
 
-        :return: connection to jabber server
-        :rtype: Client
+        :param event: event
+        :type event: Dict[str, Any]
         """
-
-        jid = JID(self.config.get("jid", ""))  # JID object
-        client = Client(jid.getDomain(), debug=[])
 
         try:
-            client.connect()
-            client.auth(
-                user=jid.getNode(),
-                password=self.config.get("password", ""),
-                resource=self.config.get("resource", ""),
+            self.send_presence()
+            await self.get_roster()
+            self.send_message(
+                mto=self.options.recipient,
+                mbody=self.options.message,
+                mtype="chat",
             )
-            client.sendInitPresence(requestRoster=0)
-        except Exception as error:
-            if not self.options.quiet:
-                sys.stdout.write(
-                    "ERROR: Couldn't connect or auth on server. {error}\n".format(
-                        error=error
-                    )
-                )
-            sys.exit(-1)
-
-        return client
-
-    def _get_message(self) -> Message:
-        """
-        Create and return message.
-
-        :return: jabber message
-        :rtype: Message
-        """
-
-        message = Message(self.options.recipient, self.options.message)
-        message.setAttr("type", self.options.type)
-
-        return message
-
-    def notify(self) -> None:
-        """
-        Send message.
-        """
-
-        connection = self._get_connection()
-        message = self._get_message()
-
-        try:
-            if self.options.type == self.MESSAGE_TYPE_GROUP_CHAT:
-                connection.send(
-                    Presence(
-                        to="{recipient}/{jid}".format(
-                            **{
-                                "recipient": self.options.recipient,
-                                "jid": self.config.get("jid", ""),
-                            }
-                        )
-                    )
-                )
-                sleep(1)
-            connection.send(message)
+            await self.disconnect(wait=True)
         except Exception as error:
             if not self.options.quiet:
                 sys.stdout.write(
                     "ERROR: Couldn't send message. {error}\n".format(error=error)
                 )
+            await self.disconnect(wait=True)
             sys.exit(-1)
 
 
@@ -263,7 +201,11 @@ def main() -> None:
     """
 
     notifier = NotificationJabber()
-    notifier.notify()
+    notifier.register_plugin("xep_0030")  # Service Discovery
+    notifier.register_plugin("xep_0199")  # XMPP Ping
+    notifier.register_plugin("xep_0045")  # Multi-User Chat
+    notifier.connect()
+    notifier.process(forever=False)
 
 
 if __name__ == "__main__":

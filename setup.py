@@ -27,7 +27,7 @@ setup(
         "notification_jabber.py",
     ],
     install_requires=[
-        "xmpppy>=0.6.2",
+        "slixmpp>=1.7.0",
     ],
     package_data={
         "nagios-notification-jabber": DATA,
