@@ -4,25 +4,14 @@
 # tests/notification_jabber_test.py
 
 
-from __future__ import unicode_literals
-
 from io import StringIO
 from argparse import Namespace
+from unittest.mock import mock_open
+from typing import List  # pylint: disable=W0611
 
 import pytest
 import contextlib2
-
-
-try:
-    from unittest.mock import mock_open
-except ImportError:
-    from mock import mock_open
-try:
-    from pytest_mock.plugin import MockerFixture  # pylint: disable=W0611  # noqa: F401
-except ImportError:
-    from pytest_mock.plugin import (  # type: ignore  # pylint: disable=W0611  # noqa: F401,E501
-        MockFixture as MockerFixture,
-    )
+from pytest_mock.plugin import MockerFixture  # pylint: disable=W0611  # noqa: F401
 
 from notification_jabber import NotificationJabber
 
@@ -35,10 +24,10 @@ __all__ = [
     "test__get_config__error",
     "test__get_config__no_section_option_error",
     "test__get_config__no_config_error",
-]
+]  # type: List[str]
 
 
-def test__get_options(mocker):
+def test__get_options(mocker: MockerFixture) -> None:
     """
     Test "_get_options" method must return argparse namespace.
 
@@ -73,7 +62,7 @@ def test__get_options(mocker):
     assert isinstance(notifier.options, Namespace)  # nosec: B101
 
 
-def test__get_options__missing_recipient_option(mocker):
+def test__get_options__missing_recipient_option(mocker: MockerFixture) -> None:
     """
     Test "_get_options" method must exit with recipient option missing error.
 
@@ -91,7 +80,7 @@ def test__get_options__missing_recipient_option(mocker):
     assert "Required recipient option missing" in out.getvalue().strip()  # nosec: B101
 
 
-def test__get_options__missing_message_option(mocker):
+def test__get_options__missing_message_option(mocker: MockerFixture) -> None:
     """
     Test "_get_options" method must exit with message option missing error.
 
@@ -109,7 +98,7 @@ def test__get_options__missing_message_option(mocker):
     assert "Required message option missing" in out.getvalue().strip()  # nosec: B101
 
 
-def test__get_config(mocker):
+def test__get_config(mocker: MockerFixture) -> None:
     """
     Test "_get_config" method must return config data.
 
@@ -118,10 +107,10 @@ def test__get_config(mocker):
     """
 
     data = """
-[JABBER]
-jid = test@example.com
-password = secret
-resource =
+    [JABBER]
+    jid = test@example.com
+    password = secret
+    resource =
     """
     expected = {
         "jid": "test@example.com",
@@ -142,22 +131,16 @@ resource =
             "notification_jabber.ini",
         ],
     )
-    try:
-        mocker.patch(
-            "builtins.open",
-            mock_open(read_data=data),
-        )
-    except ImportError:
-        mocker.patch(
-            "__builtin__.open",
-            mock_open(read_data=data),
-        )
+    mocker.patch(
+        "builtins.open",
+        mock_open(read_data=data),
+    )
     notifier = NotificationJabber()
 
     assert notifier.config == expected  # nosec: B101
 
 
-def test__get_config__error(mocker):
+def test__get_config__error(mocker: MockerFixture) -> None:
     """
     Test "_get_config" method must fail on an error.
 
@@ -180,16 +163,10 @@ def test__get_config__error(mocker):
             "notification_jabber.ini",
         ],
     )
-    try:
-        mocker.patch(
-            "builtins.open",
-            return_value=IOError(),
-        )
-    except ImportError:
-        mocker.patch(
-            "__builtin__.open",
-            return_value=IOError(),
-        )
+    mocker.patch(
+        "builtins.open",
+        return_value=IOError(),
+    )
 
     with pytest.raises(SystemExit):
         with contextlib2.redirect_stderr(out):
@@ -201,7 +178,7 @@ def test__get_config__error(mocker):
     )
 
 
-def test__get_config__no_section_option_error(mocker):
+def test__get_config__no_section_option_error(mocker: MockerFixture) -> None:
     """
     Test "_get_config" method must fail on no section/option error.
 
@@ -229,16 +206,10 @@ def test__get_config__no_section_option_error(mocker):
             "notification_jabber.ini",
         ],
     )
-    try:
-        mocker.patch(
-            "builtins.open",
-            mock_open(read_data=data),
-        )
-    except ImportError:
-        mocker.patch(
-            "__builtin__.open",
-            mock_open(read_data=data),
-        )
+    mocker.patch(
+        "builtins.open",
+        mock_open(read_data=data),
+    )
 
     with pytest.raises(SystemExit):
         with contextlib2.redirect_stderr(out):
@@ -249,7 +220,7 @@ def test__get_config__no_section_option_error(mocker):
     )
 
 
-def test__get_config__no_config_error(mocker):
+def test__get_config__no_config_error(mocker: MockerFixture) -> None:
     """
     Test "_get_config" method must fail on no config file error.
 

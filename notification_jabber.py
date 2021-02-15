@@ -24,25 +24,19 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from __future__ import unicode_literals
-
 import os
 import sys
 from time import sleep
+from typing import Dict, List  # pylint: disable=W0611
+from configparser import ConfigParser, NoOptionError, NoSectionError
 from argparse import Namespace, ArgumentParser  # pylint: disable=W0611  # noqa: F401
 
 from xmpp import JID, Client, Message, Presence
 
 
-try:
-    from configparser import ConfigParser, NoOptionError, NoSectionError
-except ImportError:
-    from ConfigParser import ConfigParser, NoOptionError, NoSectionError  # type: ignore
-
-
 __all__ = [
     "main",
-]
+]  # type: List[str]
 
 
 # metadata
@@ -58,15 +52,15 @@ class NotificationJabber(object):
     MESSAGE_TYPE_CHAT = "chat"  # type: str
     MESSAGE_TYPE_GROUP_CHAT = "groupchat"  # type: str
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Get command line args.
         """
 
-        self.options = self._get_options()  # type: ignore
-        self.config = self._get_config()  # type: ignore
+        self.options = self._get_options()
+        self.config = self._get_config()
 
-    def _get_options(self):
+    def _get_options(self) -> Namespace:
         """
         Parse commandline options arguments.
 
@@ -146,7 +140,7 @@ class NotificationJabber(object):
 
         return options
 
-    def _get_config(self):
+    def _get_config(self) -> Dict[str, str]:
         """
         Get connection settings from config file.
 
@@ -190,7 +184,7 @@ class NotificationJabber(object):
                 )
             sys.exit(0)
 
-    def _get_connection(self):
+    def _get_connection(self) -> Client:
         """
         Get and return connection to jabber server.
 
@@ -220,7 +214,7 @@ class NotificationJabber(object):
 
         return client
 
-    def _get_message(self):
+    def _get_message(self) -> Message:
         """
         Create and return message.
 
@@ -233,13 +227,13 @@ class NotificationJabber(object):
 
         return message
 
-    def notify(self):
+    def notify(self) -> None:
         """
         Send message.
         """
 
-        connection = self._get_connection()  # type: ignore
-        message = self._get_message()  # type: ignore
+        connection = self._get_connection()
+        message = self._get_message()
 
         try:
             if self.options.type == self.MESSAGE_TYPE_GROUP_CHAT:
@@ -263,15 +257,15 @@ class NotificationJabber(object):
             sys.exit(-1)
 
 
-def main():
+def main() -> None:
     """
     Program main.
     """
 
-    notifier = NotificationJabber()  # type: ignore
-    notifier.notify()  # type: ignore
+    notifier = NotificationJabber()
+    notifier.notify()
 
 
 if __name__ == "__main__":
 
-    main()  # type: ignore
+    main()

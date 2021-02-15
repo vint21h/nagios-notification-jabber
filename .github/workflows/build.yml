@@ -52,7 +52,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "2.7"
           - "3.6"
           - "3.7"
           - "3.8"
@@ -77,16 +76,9 @@ jobs:
         with:
           path: .coverage
           key: .coverage-${{ github.run_id }}-${{ github.run_number }}
-      - name: Install base dependencies
+      - name: Install dependencies
         run: |
           pip install pipenv
-      - name: Install old python dependencies
-        if: matrix.python-version == '2.7'
-        run: |
-          pip install .[test-old-python]
-      - name: Install dependencies
-        if: matrix.python-version == '3.6' || matrix.python-version == '3.7' || matrix.python-version == '3.8' || matrix.python-version == '3.9'
-        run: |
           pip install .[test]
       - name: Run tests
         env:
