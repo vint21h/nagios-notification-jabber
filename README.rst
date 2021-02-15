@@ -61,7 +61,7 @@ For other authors list see AUTHORS file.
     :alt: GitHub
 .. |Coveralls| image:: https://coveralls.io/repos/github/vint21h/nagios-notification-jabber/badge.svg?branch=master
     :alt: Coveralls
-.. |Requires| image:: https://requires.io/github/vint21h/django-notification-jabber/requirements.svg?branch=master
+.. |Requires| image:: https://requires.io/github/vint21h/nagios-notification-jabber/requirements.svg?branch=master
     :alt: Requires
 .. |pypi-license| image:: https://img.shields.io/pypi/l/nagios-notification-jabber
     :alt: License
