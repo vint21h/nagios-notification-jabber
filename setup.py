@@ -82,6 +82,7 @@ setup(
             "coveralls==3.0.1",
             "darglint==1.7.0",
             "dodgy==0.2.1",
+            "dotenv-linter==0.2.0",
             "flake8-annotations-complexity==0.0.6",
             "flake8-annotations-coverage==0.0.5",
             "flake8-bugbear==21.3.1",
