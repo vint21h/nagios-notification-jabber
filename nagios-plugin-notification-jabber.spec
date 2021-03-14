@@ -7,7 +7,7 @@
 
 Summary: Notifications via jabber Nagios plugin
 Name: nagios-plugins-notification-jabber
-Version: 1.0.3
+Version: 1.0.4
 Release: 1%{?dist}
 Source0: %{original_name}-%{version}.tar.gz
 License: GPLv3 or later
@@ -35,6 +35,9 @@ install -p -m 755 notification_jabber.py %{buildroot}%{_libdir}/nagios/plugins/n
 %{_libdir}/nagios/plugins/notification_jabber
 
 %changelog
+* Sun Mar 14 2021 Alexei Andrushievich <vint21h@vint21h.pp.ua> - 1.0.4-1
+- Updated to new version
+
 * Wed Mar 10 2021 Alexei Andrushievich <vint21h@vint21h.pp.ua> - 1.0.3-1
 - Updated to new version
 

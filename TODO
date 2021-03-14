@@ -1,5 +1,2 @@
 # nagios-notification-jabber
 # TODO
-
-
- - Use setup.cfg instead of setup.py
