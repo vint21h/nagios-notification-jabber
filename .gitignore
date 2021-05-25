@@ -18,6 +18,7 @@ __pycache__/*
 *.save
 .mypy_cache/*
 .pytest_cache/*
+.direnv
 
 
 # IDE's
@@ -47,4 +48,3 @@ static/*
 .env
 .coverage
 htmlcov
-Pipfile.lock

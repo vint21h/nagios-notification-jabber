@@ -10,76 +10,76 @@ repos:
       stages: [commit]
       language: system
       pass_filenames: false
-      entry: pipenv run seed-isort-config
+      entry: seed-isort-config
       types: [python]
     - id: removestar
       name: removestar
       stages: [commit]
       language: system
-      entry: pipenv run removestar -i notification_jabber
+      entry: removestar -i notification_jabber
       types: [python]
     - id: isort
       name: isort
       stages: [commit]
       language: system
-      entry: pipenv run isort
+      entry: isort
       types: [python]
     - id: black
       name: black
       stages: [commit]
       language: system
-      entry: pipenv run black notification_jabber.py tests
+      entry: black notification_jabber.py tests
       types: [python]
     - id: yesqa
       name: yesqa
       stages: [commit]
       language: system
       pass_filenames: false
-      entry: pipenv run yesqa
+      entry: yesqa
       types: [python]
     - id: flake8
       name: flake8
       stages: [commit]
       language: system
-      entry: pipenv run flake8
+      entry: flake8
       types: [python]
     - id: interrogate
       name: interrogate
       stages: [commit]
       language: system
-      entry: pipenv run interrogate . -I -M
+      entry: interrogate . -I -M -e .direnv
       types: [python]
     - id: pylint
       name: pylint
       stages: [commit]
       language: system
-      entry: pipenv run pylint notification_jabber tests
+      entry: pylint notification_jabber tests
       types: [python]
     - id: bandit
       name: bandit
       stages: [commit]
       language: system
-      entry: pipenv run bandit --ini=setup.cfg
+      entry: bandit --ini=setup.cfg
       types: [python]
       pass_filenames: true
     - id: dodgy
       name: dodgy
       stages: [commit]
       language: system
-      entry: pipenv run dodgy
+      entry: dodgy
       types: [python]
       pass_filenames: false
     - id: darglint
       name: darglint
       stages: [commit]
       language: system
-      entry: pipenv run darglint
+      entry: darglint
       types: [python]
     - id: mypy
       name: mypy
       stages: [commit]
       language: system
-      entry: bash -c 'PYTHONPATH="$PYTHONPATH:$PWD" pipenv run mypy'
+      entry: bash -c 'PYTHONPATH="$PYTHONPATH:$PWD" mypy'
       types: [python]
       pass_filenames: false
     - id: check-manifest
@@ -87,32 +87,32 @@ repos:
       stages: [commit]
       language: system
       pass_filenames: false
-      entry: pipenv run check-manifest
+      entry: check-manifest
       types: [python]
     - id: pyroma
       name: pyroma
       stages: [commit]
       language: system
       pass_filenames: false
-      entry: pipenv run pyroma -d .
+      entry: pyroma -d .
       types: [python]
     - id: check-wheel-contents
       name: check-wheel-contents
       stages: [commit]
       language: system
       pass_filenames: false
-      entry: bash -c 'make build -B && pipenv run check-wheel-contents dist'
+      entry: bash -c 'make build -B && check-wheel-contents dist'
       types: [python]
     - id: dotenv-linter
       name: dotenv-linter
-      entry: pipenv run dotenv-linter
+      entry: dotenv-linter
       language: system
       stages: [commit]
       types: [text]
       files: \.env*
       exclude: .envrc
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.0.1
     hooks:
       - id: check-added-large-files
       - id: check-ast
